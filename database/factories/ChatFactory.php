@@ -17,8 +17,10 @@ class ChatFactory extends Factory
      */
     public function definition(): array
     {
+        $isPrivate = $this->faker->boolean();
         return [
-            //
+            'name' => $isPrivate ? null : $this->faker->word(),
+            'is_private_chat' => $isPrivate,
         ];
     }
 }

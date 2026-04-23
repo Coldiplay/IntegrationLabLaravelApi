@@ -21,9 +21,9 @@ return new class extends Migration
             $table->double('weight');
             //TODO: Сделать сложное свойство Dimensions (Высота, длина, ширина)
             //$table->
-            $table->enum('danger_level', ['Low', 'Medium', 'High', 'Extreme'])->nullable()->default(0);
+            $table->enum('danger_level', ['Low', 'Medium', 'High', 'Extreme'])->nullable()->default(null);
             $table->foreignIdFor(ShippingOrder::class);
-            $table->foreignIdFor(Shipping::class);
+            $table->foreignIdFor(Shipping::class)->nullable();
             $table->foreignIdFor(CargoType::class);
             $table->timestamps();
         });

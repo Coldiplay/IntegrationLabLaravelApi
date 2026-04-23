@@ -19,6 +19,7 @@ class CargoTypeFactory extends Factory
     {
         return [
             //
+            'title' => $this->faker->word(),
         ];
     }
 }

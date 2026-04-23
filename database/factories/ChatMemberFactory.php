@@ -2,7 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Models\Chat;
 use App\Models\ChatMember;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,8 +19,11 @@ class ChatMemberFactory extends Factory
      */
     public function definition(): array
     {
+        $chatIds = Chat::pluck('id')->toArray();
+        $userIds = User::pluck('id')->toArray();
         return [
-            //
+            'chat_id' => $this->faker->randomElement($chatIds),
+            'user_id' => $this->faker->randomElement($userIds),
         ];
     }
 }

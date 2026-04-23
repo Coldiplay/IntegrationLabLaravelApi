@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Driver;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,8 +18,11 @@ class DriverFactory extends Factory
      */
     public function definition(): array
     {
+        $userIds = User::pluck('id')->toArray();
         return [
-            //
+            'user_id' => $this->faker->randomElement($userIds),
+            'rights' => $this->faker->randomElement(['A', 'B']),
+            'drivers_license' => $this->faker->text(40),
         ];
     }
 }
