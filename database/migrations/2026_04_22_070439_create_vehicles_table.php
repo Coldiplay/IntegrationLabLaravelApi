@@ -20,12 +20,12 @@ return new class extends Migration
             $table->enum('needed_rights', ['A', 'B']);
             $table->float('lifting_capacity');
             //TODO: Заполнить enum body_type
-            $table->enum('body_type', []);
+            $table->enum('body_type', ['S', 'M']);
             //TODO: vehicleSize (dimensions)
             //TODO: bodySize (dimensions)
-            $table->float('max_cargo_value');
+            $table->float('max_cargo_volume');
             $table->float('vehicle_weight');
-            $table->float('number_of_axes');
+            $table->tinyInteger('number_of_axes', unsigned: true);
             $table->timestamps();
         });
     }

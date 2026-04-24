@@ -18,7 +18,15 @@ class VehicleFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'vehicle_number_plate' => fake()->text(15),
+            'brand' => $this->faker->word(),
+            'model' => $this->faker->word(),
+            'needed_rights' => $this->faker->randomElement(['A', 'B']),
+            'lifting_capacity' => $this->faker->randomFloat(2, 1000, 5000),
+            'body_type' => $this->faker->randomElement(['S', 'M']),
+            'max_cargo_volume' => $this->faker->randomFloat(2, 30, 100),
+            'vehicle_weight' => $this->faker->randomFloat(2, 1000, 3000),
+            'number_of_axes' => $this->faker->randomDigitNotZero()
         ];
     }
 }
