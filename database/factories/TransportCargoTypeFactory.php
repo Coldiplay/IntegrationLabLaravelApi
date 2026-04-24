@@ -24,6 +24,7 @@ class TransportCargoTypeFactory extends Factory
         foreach (Vehicle::pluck('id')->toArray() as $vehicleIdd) {
             $cargoTypeIds = array_diff(CargoType::pluck('id')->toArray(), TransportCargoType::where('vehicle_id', $vehicleIdd)->pluck('cargo_type_id')->toArray());
             if (!empty($cargoTypeIds)) {
+                $vehicleId = $vehicleIdd;
                 break;
             }
         }
