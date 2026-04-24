@@ -4,7 +4,6 @@ namespace Database\Factories;
 
 use App\Models\Driver;
 use App\Models\DriversShift;
-use DateTime;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**

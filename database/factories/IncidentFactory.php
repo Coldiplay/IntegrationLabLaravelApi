@@ -2,7 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Models\Driver;
 use App\Models\Incident;
+use App\Models\Shipping;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,8 +19,14 @@ class IncidentFactory extends Factory
      */
     public function definition(): array
     {
+        $shippingIds = array_diff(Shipping::pluck('id')->toArray(), Incident::pluck('id')->toArray());
+        $userIds = Driver::pluck('user_id')->toArray();
         return [
-            //
+            'user_id' => $this->faker->randomElement($userIds),
+            'driver_id' => $this->faker->randomElement($shippingIds),
+            'description' => $this->faker->text(500),
+            'incident_date' => $this->faker->dateTime(),
+            'status' => $this->faker->randomElement(['Pending', 'In Progress', 'Resolved']),
         ];
     }
 }

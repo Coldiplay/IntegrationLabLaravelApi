@@ -18,7 +18,14 @@ class ShippingOrderFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'order_date' => $this->faker->date(),
+            'receiver_fio' => $this->faker->name(),
+            'receiver_phone' => $this->faker->phoneNumber(),
+            'address' => $this->faker->address(),
+            'status' => $this->faker->randomElement(['InProcessing' , 'InProgress']),
+            'shipping_date' => $this->faker->date(),
+            'sent_date' => $this->faker->date(),
+            'received_date' => $this->faker->date(),
         ];
     }
 }
