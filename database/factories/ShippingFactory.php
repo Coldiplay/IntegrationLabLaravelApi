@@ -20,7 +20,7 @@ class ShippingFactory extends Factory
     public function definition(): array
     {
         $vehicleIds = Vehicle::pluck('id')->toArray();
-        $driverIds = Driver::pluck('id')->toArray();
+        $driverIds = Driver::pluck('user_id')->toArray();
         return [
             'delivery_point' => $this->faker->address(),
             'estimated_delivery_date' => $this->faker->date(),

@@ -11,10 +11,10 @@ class Chat extends Model
 {
     /** @use HasFactory<\Database\Factories\ChatFactory> */
     use HasFactory;
-
     public function chatMembers() : HasManyThrough
     {
-        return $this->hasManyThrough(User::class, ChatMember::class);
+        return $this->hasManyThrough(User::class, ChatMember::class,
+            'chat_id', 'id', 'id', 'user_id');
     }
 
     public function messages() : HasMany

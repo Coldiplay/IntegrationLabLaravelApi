@@ -15,10 +15,12 @@ class ChatMember extends Model
 
 
     //TODO: Проверить это
+    /*
     public function messages() : HasManyThrough
     {
         return $this->HasManyThrough(Message::class, User::class);
     }
+    */
 
     public function chat() : BelongsTo
     {
