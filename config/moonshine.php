@@ -37,7 +37,7 @@ return [
 
     // Default flags
     'use_migrations' => true,
-    'use_notifications' => true,
+    'use_notifications' => false,
     'use_database_notifications' => false,
     'use_routes' => true,
     'use_profile' => true,
@@ -91,7 +91,7 @@ return [
 
     // Layout, palette, pages, forms
     'layout' => App\MoonShine\Layouts\MoonShineLayout::class,
-    'palette' => MoonShine\ColorManager\Palettes\TealPalette::class,
+    'palette' => MoonShine\ColorManager\Palettes\WinterPalette::class,
 
     'forms' => [
         'login' => LoginForm::class,

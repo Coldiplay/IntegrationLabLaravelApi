@@ -1,4 +1,6 @@
 <?php
+
+use App\Http\Controllers\API\ChatController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -9,11 +11,15 @@ use Illuminate\Support\Facades\Route;
 
 // Swagger Documentation - редирект на Swagger UI
 Route::get('/docs', function () {
-    //return redirect()->to('/spectrum/openapi.html');
+    return redirect()->to('/spectrum/openapi.html');
 });
 
 
 // Protected routes (требуют авторизации)
 Route::middleware('auth:sanctum')->group(function () {
+
+    Route::group(['prefix' => 'chat'], function () {
+        Route::get('/', [ChatController::class, 'index'])->name('chat.index');
+    });
 
 });

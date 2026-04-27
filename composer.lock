@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3916cf4c7b3193a9f867e7f45679ab54",
+    "content-hash": "2f461224a17669ca5e5d452b8859707a",
     "packages": [
         {
             "name": "brick/math",
@@ -3643,6 +3643,71 @@
             "time": "2025-12-14T04:43:48+00:00"
         },
         {
+            "name": "spatie/fork",
+            "version": "1.2.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spatie/fork.git",
+                "reference": "83a51210fd366af3972aad119e7ab5e35ac57850"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spatie/fork/zipball/83a51210fd366af3972aad119e7ab5e35ac57850",
+                "reference": "83a51210fd366af3972aad119e7ab5e35ac57850",
+                "shasum": ""
+            },
+            "require": {
+                "ext-pcntl": "*",
+                "ext-sockets": "*",
+                "php": "^8.3"
+            },
+            "require-dev": {
+                "laravel/pint": "^1.0",
+                "nesbot/carbon": "^2.66|^3.0",
+                "pestphp/pest": "^4.0",
+                "spatie/ray": "^1.10"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Spatie\\Fork\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Brent Roose",
+                    "email": "brent@spatie.be",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Freek Van der Herten",
+                    "email": "freek@spatie.be",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A lightweight solution for running code concurrently in PHP",
+            "homepage": "https://github.com/spatie/fork",
+            "keywords": [
+                "fork",
+                "spatie"
+            ],
+            "support": {
+                "issues": "https://github.com/spatie/fork/issues",
+                "source": "https://github.com/spatie/fork/tree/1.2.7"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/spatie",
+                    "type": "github"
+                }
+            ],
+            "time": "2026-03-27T19:08:46+00:00"
+        },
+        {
             "name": "symfony/clock",
             "version": "v7.4.8",
             "source": {
@@ -6443,6 +6508,204 @@
                 }
             ],
             "time": "2026-04-26T05:33:54+00:00"
+        },
+        {
+            "name": "wadakatu/laravel-spectrum",
+            "version": "v1.1.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/wadakatu/laravel-spectrum.git",
+                "reference": "0c80efc8456a7dcb910f62e37f15cee95b4d0683"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/wadakatu/laravel-spectrum/zipball/0c80efc8456a7dcb910f62e37f15cee95b4d0683",
+                "reference": "0c80efc8456a7dcb910f62e37f15cee95b4d0683",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/console": "^11.0|^12.0",
+                "illuminate/routing": "^11.0|^12.0",
+                "illuminate/support": "^11.0|^12.0",
+                "nikic/php-parser": "^5.5",
+                "php": "^8.2",
+                "spatie/fork": "^1.2",
+                "symfony/finder": "^6.0|^7.0",
+                "workerman/workerman": "^5.1"
+            },
+            "require-dev": {
+                "devizzent/cebe-php-openapi": "^1.1",
+                "fakerphp/faker": "^1.23",
+                "infection/infection": "*",
+                "laravel/pint": "^1.23",
+                "orchestra/testbench": "^9.0|^10.0",
+                "phpstan/phpstan": "^2.1",
+                "phpunit/phpunit": "^10.0|^11.0|^12.0",
+                "spatie/phpunit-snapshot-assertions": "^5.2"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "LaravelSpectrum\\SpectrumServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "LaravelSpectrum\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "wadakatu",
+                    "email": "wadakatukoyo330@gmail.com"
+                }
+            ],
+            "description": "Zero-annotation OpenAPI/Swagger documentation generator for Laravel - automatic API docs from your existing code",
+            "homepage": "https://github.com/wadakatu/laravel-spectrum",
+            "keywords": [
+                "api",
+                "api-documentation",
+                "automatic",
+                "documentation",
+                "generator",
+                "laravel",
+                "mock-server",
+                "no-annotation",
+                "openapi",
+                "rest-api",
+                "swagger",
+                "swagger-alternative",
+                "zero-annotation"
+            ],
+            "support": {
+                "changelog": "https://github.com/wadakatu/laravel-spectrum/releases",
+                "docs": "https://github.com/wadakatu/laravel-spectrum#readme",
+                "issues": "https://github.com/wadakatu/laravel-spectrum/issues",
+                "source": "https://github.com/wadakatu/laravel-spectrum"
+            },
+            "time": "2026-02-16T10:52:56+00:00"
+        },
+        {
+            "name": "workerman/coroutine",
+            "version": "v1.1.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/workerman-php/coroutine.git",
+                "reference": "b60e44267b90d398dbfa7a320f3e97b46357ac9f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/workerman-php/coroutine/zipball/b60e44267b90d398dbfa7a320f3e97b46357ac9f",
+                "reference": "b60e44267b90d398dbfa7a320f3e97b46357ac9f",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.1",
+                "workerman/workerman": "^5.1"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^11.0",
+                "psr/log": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Workerman\\": "src",
+                    "Workerman\\Coroutine\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Workerman coroutine",
+            "support": {
+                "issues": "https://github.com/workerman-php/coroutine/issues",
+                "source": "https://github.com/workerman-php/coroutine/tree/v1.1.5"
+            },
+            "time": "2026-03-12T02:07:37+00:00"
+        },
+        {
+            "name": "workerman/workerman",
+            "version": "v5.1.10",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/walkor/workerman.git",
+                "reference": "6ecda94609c40ade0f1e548535d24d8e09e67409"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/walkor/workerman/zipball/6ecda94609c40ade0f1e548535d24d8e09e67409",
+                "reference": "6ecda94609c40ade0f1e548535d24d8e09e67409",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "php": ">=8.1",
+                "workerman/coroutine": "^1.1 || dev-main"
+            },
+            "conflict": {
+                "ext-swow": "<v1.0.0"
+            },
+            "require-dev": {
+                "guzzlehttp/guzzle": "^7.10",
+                "mockery/mockery": "^1.6",
+                "pestphp/pest": "^2.36 || ^3 || ^4",
+                "phpstan/phpstan": "^2.1"
+            },
+            "suggest": {
+                "ext-event": "For better performance. "
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Workerman\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "walkor",
+                    "email": "walkor@workerman.net",
+                    "homepage": "https://www.workerman.net",
+                    "role": "Developer"
+                }
+            ],
+            "description": "An asynchronous event driven PHP framework for easily building fast, scalable network applications.",
+            "homepage": "https://www.workerman.net",
+            "keywords": [
+                "asynchronous",
+                "event-loop",
+                "framework",
+                "http"
+            ],
+            "support": {
+                "email": "walkor@workerman.net",
+                "forum": "https://www.workerman.net/questions",
+                "issues": "https://github.com/walkor/workerman/issues",
+                "source": "https://github.com/walkor/workerman",
+                "wiki": "https://www.workerman.net/doc/workerman/"
+            },
+            "funding": [
+                {
+                    "url": "https://opencollective.com/workerman",
+                    "type": "open_collective"
+                },
+                {
+                    "url": "https://www.patreon.com/walkor",
+                    "type": "patreon"
+                }
+            ],
+            "time": "2026-03-20T09:38:10+00:00"
         }
     ],
     "packages-dev": [
