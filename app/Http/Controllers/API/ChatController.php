@@ -43,6 +43,7 @@ class ChatController extends Controller
     public function store(StoreChatRequest $request) : JsonResponse
     {
         $chat = Chat::create($request->validated());
+        ChatMember::create(['chat_id' => $chat->id, 'user_id' => $request->user()->id]);
         return $this->onSuccess(new ChatResource($chat), 'Chat created successfully.', 201);
     }
 

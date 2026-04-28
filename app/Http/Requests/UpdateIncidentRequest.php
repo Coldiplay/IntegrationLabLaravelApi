@@ -23,7 +23,8 @@ class UpdateIncidentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'description' => 'sometimes|string|max:500',
+            'status' => 'required|in:Pending,In Progress,Resolved',
         ];
     }
 }

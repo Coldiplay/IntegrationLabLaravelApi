@@ -2,8 +2,10 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Shipping;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreIncidentRequest extends FormRequest
 {
@@ -23,7 +25,11 @@ class StoreIncidentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'shipping_id' => 'required|exists:shippings,id',
+            'driver_id' => 'required|exists:drivers,user_id',
+            'description' => 'sometimes|string|max:500|nullable',
+            'incident_date' => ['required', Rule::date()->after(Shipping::find($this->shipping_id)->shipped_date)],
+            'status' => ['sometimes', Rule::in(['Pending', 'In Progress', 'Resolved'])],
         ];
     }
 }

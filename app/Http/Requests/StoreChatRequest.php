@@ -12,7 +12,7 @@ class StoreChatRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,7 +23,8 @@ class StoreChatRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => 'required|string|min:3|max:255',
+            'is_private_chat' => 'sometimes|boolean',
         ];
     }
 }

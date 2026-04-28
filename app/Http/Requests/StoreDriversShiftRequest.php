@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreDriversShiftRequest extends FormRequest
 {
@@ -23,7 +24,8 @@ class StoreDriversShiftRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'start' => ['required', Rule::date()->afterOrEqual(today()->addHours(-2))],
+            'end' => 'sometimes|date|after:start',
         ];
     }
 }

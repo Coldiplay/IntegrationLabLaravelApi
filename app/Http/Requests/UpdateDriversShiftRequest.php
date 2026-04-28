@@ -23,7 +23,7 @@ class UpdateDriversShiftRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'end' => 'required|date|after:start',
         ];
     }
 }

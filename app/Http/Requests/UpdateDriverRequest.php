@@ -23,7 +23,8 @@ class UpdateDriverRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'rights' => 'sometimes|string|in:A,B',
+            'drivers_license' => 'sometimes|string|max:40|nullable|unique:drivers,drivers_license',
         ];
     }
 }
