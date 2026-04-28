@@ -1,9 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API;
 
+use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreShippingRequest;
+use App\Http\Requests\UpdateShippingRequest;
 use App\Models\Shipping;
-use Illuminate\Http\Request;
 
 class ShippingController extends Controller
 {
@@ -16,17 +18,9 @@ class ShippingController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreShippingRequest $request)
     {
         //
     }
@@ -40,17 +34,9 @@ class ShippingController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Shipping $shipping)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Shipping $shipping)
+    public function update(UpdateShippingRequest $request, Shipping $shipping)
     {
         //
     }
