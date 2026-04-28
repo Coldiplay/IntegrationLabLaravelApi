@@ -3,18 +3,22 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Library\ApiHelpers;
 use App\Http\Requests\StoreShippingOrderRequest;
 use App\Http\Requests\UpdateShippingOrderRequest;
+use App\Http\Resources\ShippingOrderCollection;
+use App\Http\Resources\ShippingOrderResource;
 use App\Models\ShippingOrder;
 
 class ShippingOrderController extends Controller
 {
+    use ApiHelpers;
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        return $this->onSuccess(new ShippingOrderCollection(ShippingOrder::all()), 'All shipping orders retrieved successfully.');
     }
 
     /**
@@ -22,7 +26,8 @@ class ShippingOrderController extends Controller
      */
     public function store(StoreShippingOrderRequest $request)
     {
-        //
+        $shipping = ShippingOrder::create($request->validated());
+        return $this->onSuccess(new ShippingOrderResource($shipping), 'Shipping created successfully.', 201);
     }
 
     /**
@@ -30,7 +35,7 @@ class ShippingOrderController extends Controller
      */
     public function show(ShippingOrder $shippingOrder)
     {
-        //
+        return $this->onSuccess(new ShippingOrderResource($shippingOrder), 'Shipping retrieved successfully.');
     }
 
     /**
@@ -38,7 +43,8 @@ class ShippingOrderController extends Controller
      */
     public function update(UpdateShippingOrderRequest $request, ShippingOrder $shippingOrder)
     {
-        //
+        $shippingOrder->update($request->validated());
+        return $this->onSuccess(new ShippingOrderResource($shippingOrder), 'Shipping updated successfully.');
     }
 
     /**
@@ -46,6 +52,7 @@ class ShippingOrderController extends Controller
      */
     public function destroy(ShippingOrder $shippingOrder)
     {
-        //
+        $shippingOrder->delete();
+        return $this->onSuccess(null, 'Shipping deleted successfully.');
     }
 }

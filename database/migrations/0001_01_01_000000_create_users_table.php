@@ -11,6 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
+        //TODO: Добавить роли
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('login', 32)->unique();

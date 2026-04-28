@@ -5,7 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 class Vehicle extends Model
 {
@@ -19,9 +18,8 @@ class Vehicle extends Model
         return $this->hasMany(Shipping::class);
     }
 
-    //TODO: Придумать, как связать с происшествиями
-//    public function incidents() : HasManyThrough
-//    {
-//        return $this->HasManyThrough(Incident::class, Shipping::class);
-//    }
+    public function incidents() : HasMany
+    {
+        return $this->HasMany(Incident::class);
+    }
 }

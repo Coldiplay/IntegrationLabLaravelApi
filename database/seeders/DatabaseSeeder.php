@@ -24,7 +24,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        //TODO: Доделать сидеры, сейчас падает
         //Не зависят от других factory
         User::factory(15)->create();
         User::factory()->create([

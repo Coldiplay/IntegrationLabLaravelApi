@@ -3,18 +3,23 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Library\ApiHelpers;
 use App\Http\Requests\StoreVehicleRequest;
 use App\Http\Requests\UpdateVehicleRequest;
+use App\Http\Resources\VehicleCollection;
+use App\Http\Resources\VehicleResource;
 use App\Models\Vehicle;
+use Illuminate\Http\JsonResponse;
 
 class VehicleController extends Controller
 {
+    use ApiHelpers;
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index() : JsonResponse
     {
-        //
+        return $this->onSuccess(new VehicleCollection(Vehicle::all()), 'Vehicles retrieved successfully.');
     }
 
     /**
@@ -22,7 +27,8 @@ class VehicleController extends Controller
      */
     public function store(StoreVehicleRequest $request)
     {
-        //
+        $vehicle = Vehicle::create($request->validated());
+        return $this->onSuccess(new VehicleResource($vehicle), 'Vehicle created successfully.');
     }
 
     /**
@@ -30,7 +36,7 @@ class VehicleController extends Controller
      */
     public function show(Vehicle $vehicle)
     {
-        //
+        return $this->onSuccess(new VehicleResource($vehicle), 'Vehicle retrieved successfully.');
     }
 
     /**
@@ -38,7 +44,8 @@ class VehicleController extends Controller
      */
     public function update(UpdateVehicleRequest $request, Vehicle $vehicle)
     {
-        //
+        $vehicle->update($request->validated());
+        return $this->onSuccess(new VehicleResource($vehicle), 'Vehicle updated successfully.');
     }
 
     /**
@@ -46,6 +53,7 @@ class VehicleController extends Controller
      */
     public function destroy(Vehicle $vehicle)
     {
-        //
+        $vehicle->delete();
+        return $this->onSuccess(null, 'Vehicle deleted successfully.');
     }
 }

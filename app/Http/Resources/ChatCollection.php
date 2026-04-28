@@ -2,7 +2,6 @@
 
 namespace App\Http\Resources;
 
-use App\Models\ChatMember;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
@@ -15,16 +14,17 @@ class ChatCollection extends ResourceCollection
      */
     public function toArray(Request $request): array
     {
-        return [
-            'id' => $this->id,
-            'members' => $this->whenLoaded('members', function () {
-                return new ChatMembersCollection($this->collection->map(function ($member) {
-                   return [
-                       'id' => $member->id,
-                       'name' => $member->name,
-                   ];
-                }));
-            })
-        ];
+        return $this->collection->map(function ($chat) {
+            return [
+                'id' => $chat->id,
+                'name' => $chat->name,
+                'isPrivateChat' => $chat->isPrivateChat,
+
+                'relationships' =>
+                [
+                    'members' => new ChatMembersCollection($chat->members),
+                ],
+            ];
+        });
     }
 }

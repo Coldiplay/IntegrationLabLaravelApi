@@ -20,6 +20,7 @@ return new class extends Migration
             $table->foreignIdFor(User::class, 'sender_id');
             $table->foreignIdFor(Chat::class);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
