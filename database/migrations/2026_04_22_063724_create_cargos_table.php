@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\DangerLevel;
 use App\Models\CargoType;
 use App\Models\Shipping;
 use App\Models\ShippingOrder;
@@ -19,9 +20,13 @@ return new class extends Migration
             $table->string('name', 40);
             $table->string('description', 200)->nullable();
             $table->double('weight');
-            //TODO: Сделать сложное свойство Dimensions (Высота, длина, ширина)
-            //$table->
-            $table->enum('danger_level', ['Low', 'Medium', 'High', 'Extreme'])->nullable()->default(null);
+
+            $table->double('dimensions_length');
+            $table->double('dimensions_height');
+            $table->double('dimensions_width');
+
+            $table->enum('danger_level', DangerLevel::getKeys())
+                ->nullable()->default(null);
             $table->foreignIdFor(ShippingOrder::class);
             $table->foreignIdFor(Shipping::class)->nullable();
             $table->foreignIdFor(CargoType::class);

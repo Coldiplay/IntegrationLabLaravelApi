@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\ShippingStatus;
 use App\Models\Driver;
 use App\Models\Shipping;
 use App\Models\Vehicle;
@@ -25,7 +26,7 @@ class ShippingFactory extends Factory
             'delivery_point' => $this->faker->address(),
             'estimated_delivery_date' => $this->faker->date(),
             'delivery_date' => $this->faker->boolean() ? $this->faker->date() : null,
-            'shipping_status' => $this->faker->randomElement(['InProcessing', 'ReadyToShip', 'Shipping', 'Delivered', 'Incident']),
+            'shipping_status' => $this->faker->randomElement(ShippingStatus::getKeys()),
             'shipping_date' => $this->faker->date(),
             'shipped_date' => $this->faker->boolean() ? $this->faker->date() : null,
             'vehicle_id' => $this->faker->randomElement($vehicleIds),

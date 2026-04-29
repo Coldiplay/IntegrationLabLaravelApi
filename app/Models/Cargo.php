@@ -2,17 +2,19 @@
 
 namespace App\Models;
 
+use App\Casts\DimensionsCast;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Cargo extends Model
 {
     /** @use HasFactory<\Database\Factories\CargoFactory> */
     use HasFactory;
 
-
+    protected $casts = [
+        'dimensions' => DimensionsCast::class,
+    ];
 
     public function shippingOrder() : BelongsTo
     {

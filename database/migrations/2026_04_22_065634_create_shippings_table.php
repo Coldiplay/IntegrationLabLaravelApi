@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\ShippingStatus;
 use App\Models\User;
 use App\Models\Vehicle;
 use Illuminate\Database\Migrations\Migration;
@@ -18,8 +19,8 @@ return new class extends Migration
             $table->string('delivery_point', 120);
             $table->dateTime('estimated_delivery_date');
             $table->dateTime('delivery_date')->nullable();
-            $table->enum('shipping_status', ['InProcessing', 'ReadyToShip', 'Shipping', 'Delivered', 'Incident'])
-                ->default('InProcessing');
+            $table->enum('shipping_status', ShippingStatus::getKeys())
+                ->default(ShippingStatus::getKey(ShippingStatus::InProcessing));
             $table->date('shipping_date');
             $table->dateTime('shipped_date')->nullable();
             $table->foreignIdFor(Vehicle::class);
