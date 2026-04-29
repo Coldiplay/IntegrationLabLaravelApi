@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\IncidentStatus;
 use App\Models\Shipping;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
@@ -19,7 +20,8 @@ return new class extends Migration
             $table->foreignIdFor(User::class, 'driver_id');
             $table->string('description', 500)->nullable();
             $table->dateTime('incident_date');
-            $table->enum('status', ['Pending', 'In Progress', 'Resolved'])->default('Pending');
+            $table->enum('status', IncidentStatus::getKeys())
+                ->default(IncidentStatus::getKey(IncidentStatus::Pending));
             $table->timestamps();
         });
     }

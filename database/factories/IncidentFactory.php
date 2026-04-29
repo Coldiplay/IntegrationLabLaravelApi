@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\IncidentStatus;
 use App\Models\Driver;
 use App\Models\Incident;
 use App\Models\Shipping;
@@ -26,7 +27,7 @@ class IncidentFactory extends Factory
             'shipping_id' => $this->faker->randomElement($shippingIds),
             'description' => $this->faker->text(500),
             'incident_date' => $this->faker->dateTime(),
-            'status' => $this->faker->randomElement(['Pending', 'In Progress', 'Resolved']),
+            'status' => $this->faker->randomElement(IncidentStatus::getKeys()),
         ];
     }
 }

@@ -2,8 +2,10 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\Rights;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreDriverRequest extends FormRequest
 {
@@ -25,7 +27,10 @@ class StoreDriverRequest extends FormRequest
         return [
             'user_id' => 'required|integer|exists:users,id',
             'drivers_license' => 'required|string|max:40|nullable',
-            'rights' => 'required|string|in:A,B',
+            'rights' => [
+                'required',
+                Rule::in(Rights::getValues()),
+            ]
         ];
     }
 }

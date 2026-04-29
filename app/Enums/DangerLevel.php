@@ -19,7 +19,7 @@ final class DangerLevel extends Enum
 
     public function toString(): ?string
     {
-        return match ($this) {
+        return match ($this->value) {
             self::Low => 'Низкий',
             self::Medium => 'Средний',
             self::High => 'Высокий',

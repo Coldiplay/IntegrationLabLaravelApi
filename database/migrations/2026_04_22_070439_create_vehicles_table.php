@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('vehicle_number_plate', 15)->unique();
             $table->string('brand', 20);
             $table->string('model', 40);
-            $table->mediumInteger('needed_rights')->unsigned();
+            $table->mediumInteger('needed_rights', unsigned: true);
             $table->float('lifting_capacity');
             $table->enum('body_type', BodyType::getKeys());
 

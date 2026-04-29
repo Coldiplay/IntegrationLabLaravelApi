@@ -2,8 +2,10 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\Rights;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateDriverRequest extends FormRequest
 {
@@ -23,7 +25,10 @@ class UpdateDriverRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'rights' => 'sometimes|string|in:A,B',
+            'rights' => [
+                'sometimes',
+                Rule::in(Rights::getValues()),
+            ],
             'drivers_license' => 'sometimes|string|max:40|nullable|unique:drivers,drivers_license',
         ];
     }

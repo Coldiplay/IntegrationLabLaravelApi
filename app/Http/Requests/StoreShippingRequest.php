@@ -22,6 +22,7 @@ class StoreShippingRequest extends FormRequest
      */
     public function rules(): array
     {
+        //TODO: Сделать requests rules для Shipping
         return [
             //
         ];

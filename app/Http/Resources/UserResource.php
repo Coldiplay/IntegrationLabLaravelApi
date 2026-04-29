@@ -14,6 +14,7 @@ class UserResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        //TODO: Сделать UserResource
         return parent::toArray($request);
     }
 }

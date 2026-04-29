@@ -14,7 +14,7 @@ return new class extends Migration
     {
         Schema::create('drivers', function (Blueprint $table) {
             $table->foreignIdFor(User::class);
-            $table->enum('rights', ['A', 'B']);
+            $table->mediumInteger('rights', unsigned: true)->index();
             $table->string('drivers_license', 40)->nullable();
             $table->timestamps();
         });

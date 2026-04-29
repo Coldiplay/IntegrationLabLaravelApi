@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\IncidentStatus;
 use App\Models\Shipping;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
@@ -29,7 +30,7 @@ class StoreIncidentRequest extends FormRequest
             'driver_id' => 'required|exists:drivers,user_id',
             'description' => 'sometimes|string|max:500|nullable',
             'incident_date' => ['required', Rule::date()->after(Shipping::find($this->shipping_id)->shipped_date)],
-            'status' => ['sometimes', Rule::in(['Pending', 'In Progress', 'Resolved'])],
+            'status' => ['sometimes', Rule::in(IncidentStatus::getKeys())],
         ];
     }
 }

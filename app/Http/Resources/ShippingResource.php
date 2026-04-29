@@ -14,6 +14,7 @@ class ShippingResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        //TODO: Сделать ShippingResource
         return parent::toArray($request);
     }
 }

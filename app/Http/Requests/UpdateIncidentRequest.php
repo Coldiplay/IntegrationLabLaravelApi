@@ -2,8 +2,10 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\IncidentStatus;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateIncidentRequest extends FormRequest
 {
@@ -24,7 +26,10 @@ class UpdateIncidentRequest extends FormRequest
     {
         return [
             'description' => 'sometimes|string|max:500',
-            'status' => 'required|in:Pending,In Progress,Resolved',
+            'status' => [
+                'required',
+                Rule::in(IncidentStatus::getKeys())
+            ]
         ];
     }
 }

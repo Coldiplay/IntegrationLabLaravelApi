@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\OrderStatus;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -17,7 +18,7 @@ return new class extends Migration
             $table->string('receiver_fio');
             $table->string('receiver_phone');
             $table->string('address');
-            $table->enum('status', ['InProcessing', 'InProgress']); //OrderStatus
+            $table->enum('status', OrderStatus::getKeys())->default(OrderStatus::getKey(OrderStatus::InProcessing));
             $table->dateTime('shipping_date'); //Каво? надо же какой-нибудь wished_receive_date и (опционально) wished_receive_time (nullable)
             $table->dateTime('sent_date')->nullable();
             $table->dateTime('received_date')->nullable();

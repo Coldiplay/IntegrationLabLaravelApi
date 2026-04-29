@@ -17,7 +17,7 @@ final class BodyType extends Enum
 
     public function toString() : ?string
     {
-        return match ($this) {
+        return match ($this->value) {
             self::Awning => 'Тент',
             self::Van => 'Фургон',
             self::Isothermal => 'Изотермический',
