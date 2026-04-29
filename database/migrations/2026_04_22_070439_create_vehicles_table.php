@@ -1,7 +1,6 @@
 <?php
 
 use App\Enums\BodyType;
-use App\Enums\Rights;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -18,7 +17,7 @@ return new class extends Migration
             $table->string('vehicle_number_plate', 15)->unique();
             $table->string('brand', 20);
             $table->string('model', 40);
-            $table->mediumInteger('needed_rights', Rights::getValues());
+            $table->mediumInteger('needed_rights')->unsigned();
             $table->float('lifting_capacity');
             $table->enum('body_type', BodyType::getKeys());
 

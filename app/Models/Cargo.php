@@ -13,7 +13,7 @@ class Cargo extends Model
     use HasFactory;
 
     protected $casts = [
-        'dimensions' => DimensionsCast::class,
+        'dimensions' => DimensionsCast::class . ':dimensions',
     ];
 
     public function shippingOrder() : BelongsTo

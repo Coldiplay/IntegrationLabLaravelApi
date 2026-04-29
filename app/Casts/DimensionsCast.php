@@ -8,6 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class DimensionsCast implements CastsAttributes
 {
+    public function __construct(string $prefix)
+    {
+        $this->prefix = $prefix;
+    }
+
+    private string $prefix;
+
     /**
      * Cast the given value.
      *
@@ -16,9 +23,9 @@ class DimensionsCast implements CastsAttributes
     public function get(Model $model, string $key, mixed $value, array $attributes): mixed
     {
         return new Dimensions(
-            $attributes['dimensions_width'],
-            $attributes['dimensions_length'],
-            $attributes['dimensions_height']);
+            $attributes[$this->prefix . '_width'],
+            $attributes[$this->prefix . '_length'],
+            $attributes[$this->prefix . '_height']);
     }
 
     /**
@@ -29,9 +36,9 @@ class DimensionsCast implements CastsAttributes
     public function set(Model $model, string $key, mixed $value, array $attributes): mixed
     {
         return [
-            'dimensions_length' => $value->length,
-            'dimensions_width' => $value->width,
-            'dimensions_height' => $value->height,
+            $this->prefix . '_length' => $value->length,
+            $this->prefix . '_width' => $value->width,
+            $this->prefix . '_height' => $value->height,
         ];
     }
 }

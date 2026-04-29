@@ -13,8 +13,8 @@ class Vehicle extends Model
     use HasFactory;
 
     protected $casts = [
-        //TODO: Поставить параметр для создания ключей к полям (чтобы было универсальным кастом)
-        'dimensions' => DimensionsCast::class,
+        'vehicle_size' => DimensionsCast::class . ':vehicle_size',
+        'body_size' => DimensionsCast::class . ':body_size',
     ];
 
 
