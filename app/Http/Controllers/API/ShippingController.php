@@ -57,4 +57,16 @@ class ShippingController extends Controller
         $shipping->delete();
         return $this->onSuccess(null, 'Shipping deleted successfully.');
     }
+
+    public function confirmStart(Shipping $shipping) : JsonResponse
+    {
+        $shipping->update(['shipped_date' => now()]);
+        return $this->onSuccess(new ShippingResource($shipping), 'Shipping updated successfully.');
+    }
+
+    public function confirmEnd(Shipping $shipping) : JsonResponse
+    {
+        $shipping->update(['delivery_date' => null]);
+        return $this->onSuccess(new ShippingResource($shipping), 'Shipping updated successfully.');
+    }
 }

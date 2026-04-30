@@ -92,6 +92,9 @@ Route::middleware('auth:sanctum')->group(function () {
             ->name('shipping.update');
         Route::delete('/{shipping}', [ShippingController::class, 'destroy'])
             ->name('shipping.destroy');
+
+        Route::Post('/{shipping}/start', [ShippingController::class, 'confirmStart']);
+        Route::Post('/{shipping}/ent', [ShippingController::class, 'confirmEnd']);
         //
     });
 
