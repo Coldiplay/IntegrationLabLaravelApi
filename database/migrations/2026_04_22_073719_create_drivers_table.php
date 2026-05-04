@@ -13,7 +13,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('drivers', function (Blueprint $table) {
-            $table->foreignIdFor(User::class);
+            $table->foreignIdFor(User::class)
+                ->constrained('users')
+                ->cascadeOnDelete();
+            $table->primary(['user_id']);
             $table->mediumInteger('rights', unsigned: true)->index();
             $table->string('drivers_license', 40)->nullable();
             $table->timestamps();

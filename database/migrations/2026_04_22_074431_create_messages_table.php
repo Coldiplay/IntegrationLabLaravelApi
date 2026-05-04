@@ -17,8 +17,10 @@ return new class extends Migration
             $table->id();
             $table->string('content', 300);
             $table->dateTime('date');
-            $table->foreignIdFor(User::class, 'sender_id');
-            $table->foreignIdFor(Chat::class);
+            $table->foreignIdFor(User::class, 'sender_id')
+                ->constrained('users');
+            $table->foreignIdFor(Chat::class)
+                ->constrained('chats');
             $table->timestamps();
             $table->softDeletes();
         });

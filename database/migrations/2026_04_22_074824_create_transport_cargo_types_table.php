@@ -14,8 +14,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('transport_cargo_types', function (Blueprint $table) {
-            $table->foreignIdFor(Vehicle::class);
-            $table->foreignIdFor(CargoType::class);
+            $table->foreignIdFor(Vehicle::class)->constrained('vehicles');
+            $table->foreignIdFor(CargoType::class)->constrained('cargo_types');
+            $table->primary(['vehicle_id', 'cargo_type_id']);
             $table->timestamps();
         });
     }

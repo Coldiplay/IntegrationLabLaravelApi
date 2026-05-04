@@ -25,7 +25,7 @@ class DriverFactory extends Factory
             ->pluck('id')->toArray(),
             Driver::pluck('user_id')->toArray());
         return [
-            'user_id' => $this->faker->randomElement($ids),
+            'user_id' => $this->faker->unique()->randomElement($ids),
             'rights' => $this->faker->randomElement(Rights::getValues()),
             'drivers_license' => $this->faker->text(40),
         ];

@@ -24,7 +24,9 @@ return new class extends Migration
             $table->date('shipping_date');
             $table->dateTime('shipped_date')->nullable();
             $table->foreignIdFor(Vehicle::class);
-            $table->foreignIdFor(User::class, 'designated_driver_id');
+            $table->foreignIdFor(User::class, 'designated_driver_id')
+                ->constrained('users')
+                ->cascadeOnDelete();
             $table->timestamps();
         });
     }

@@ -14,8 +14,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('chat_members', function (Blueprint $table) {
-            $table->foreignIdFor(User::class);
-            $table->foreignIdFor(Chat::class);
+            $table->foreignIdFor(User::class)
+                ->constrained('users')
+                ->cascadeOnDelete();
+            $table->foreignIdFor(Chat::class)
+                ->constrained('chats')
+                ->cascadeOnDelete();
+
+            $table->primary(['user_id', 'chat_id']);
             $table->timestamps();
         });
     }

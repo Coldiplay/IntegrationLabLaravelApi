@@ -16,7 +16,8 @@ return new class extends Migration
             $table->id();
             $table->dateTime('start');
             $table->dateTime('end')->nullable();
-            $table->foreignIdFor(User::class, 'driver_id');
+            $table->foreignIdFor(User::class, 'driver_id')
+                ->constrained('users');
             $table->timestamps();
         });
     }
