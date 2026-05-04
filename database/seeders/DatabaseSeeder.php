@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Enums\Role;
 use App\Models\Cargo;
 use App\Models\CargoType;
 use App\Models\Chat;
@@ -29,6 +30,7 @@ class DatabaseSeeder extends Seeder
         User::factory()->create([
             'login' => 'admin',
             'email' => 'admin@example.com',
+            'role' => Role::Admin,
         ]);
 
         ShippingOrder::factory(15)->create();
@@ -39,7 +41,19 @@ class DatabaseSeeder extends Seeder
 
         TransportCargoType::factory(15)->create();
 
-        Driver::factory(8)->create();
+        $driversCount = User::where('role', Role::DefaultDriver)
+            ->orWhere('role', Role::Driver)
+            ->count();
+
+        if ($driversCount <= 1)
+        {
+            User::factory(3)->create([
+                'role' => Role::DefaultDriver,
+            ]);
+            $driversCount = $driversCount + 3;
+        }
+
+        Driver::factory($driversCount)->create();
         DriversShift::factory(60)->create();
 
         ChatMember::factory(15)->create();

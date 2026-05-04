@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Enums\Rights;
+use App\Enums\Role;
 use App\Models\Driver;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -18,10 +20,13 @@ class DriverFactory extends Factory
      */
     public function definition(): array
     {
-        $userIds = User::pluck('id')->toArray();
+        $ids = array_diff(User::where('role', Role::Driver)
+            ->orWhere('role', Role::DefaultDriver)
+            ->pluck('id')->toArray(),
+            Driver::pluck('id')->toArray());
         return [
-            'user_id' => $this->faker->randomElement($userIds),
-            'rights' => $this->faker->randomElement(['A', 'B']),
+            'user_id' => $this->faker->randomElement($ids),
+            'rights' => $this->faker->randomElement(Rights::getValues()),
             'drivers_license' => $this->faker->text(40),
         ];
     }

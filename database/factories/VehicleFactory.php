@@ -25,7 +25,7 @@ class VehicleFactory extends Factory
 
 
         return [
-            'vehicle_number_plate' => fake()->text(15),
+            'vehicle_number_plate' => fake()->unique()->text(15),
             'brand' => $this->faker->word(),
             'model' => $this->faker->word(),
             'needed_rights' => $this->faker->randomElement(Rights::getValues()),

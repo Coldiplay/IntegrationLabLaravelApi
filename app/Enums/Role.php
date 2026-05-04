@@ -34,4 +34,9 @@ final class Role extends FlaggedEnum
             default => null,
         };
     }
+
+    public static function isAdmin($value): bool
+    {
+        return self::fromValue($value)->is(Role::Admin());
+    }
 }

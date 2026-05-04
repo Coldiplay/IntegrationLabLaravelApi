@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Enums\Role;
 use App\Http\Controllers\Controller;
 use App\Http\Library\ApiHelpers;
 use App\Http\Requests\StoreChatRequest;
@@ -11,6 +12,8 @@ use App\Http\Requests\UpdateMessageRequest;
 use App\Http\Resources\ChatCollection;
 use App\Http\Resources\ChatResource;
 use App\Http\Resources\MessageResource;
+use App\Http\Resources\MessagesCollection;
+use App\Http\Resources\UserCollection;
 use App\Models\Chat;
 use App\Models\ChatMember;
 use App\Models\Message;
@@ -26,13 +29,16 @@ class ChatController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index($userId) : JsonResponse
+    public function index(Request $request, $userId) : JsonResponse
     {
-        //TODO: Сделать админа для просмотра всех чатов...?
-
-        $chats = Chat::query()->whereExists(function ($query) use ($userId) {
-            $query->select(DB::raw(1))->from('chat_members')->where('user_id', $userId);
-        });
+        if (empty($userId) && Role::isAdmin($request->user()->role)) {
+            $chats = Chat::all();
+        }
+        else{
+            $chats = Chat::query()->whereExists(function ($query) use ($userId) {
+                $query->select(DB::raw(1))->from('chat_members')->where('user_id', $userId);
+            });
+        }
 
         return $this->onSuccess(new ChatCollection($chats), 'Chats retrieved successfully.');
     }
@@ -52,7 +58,15 @@ class ChatController extends Controller
      */
     public function show(Request $request, Chat $chat) : JsonResponse
     {
-        return $this->onSuccess(new ChatResource($chat), 'Chat retrieved successfully.');
+        if (ChatMember::where('chat_id', $chat->id)
+                ->where('user_id', $request->user()->id)
+                ->exists()
+            || Role::isAdmin($request->user()->role))
+        {
+            return $this->onSuccess(new ChatResource($chat), 'Chat retrieved successfully.');
+        }
+
+        return $this->onError(401, 'You are not allowed to see this chat.');
     }
 
     /**
@@ -74,6 +88,18 @@ class ChatController extends Controller
     }
 
 
+    public function getMessages(Request $request, Chat $chat) : JsonResponse
+    {
+        if (ChatMember::where('chat_id', $chat->id)
+            ->where('user_id', $request->user()->id)
+            ->exists()) {
+            $messages = Message::where('chat_id', $chat->id)->get();
+            return $this->onSuccess(new MessagesCollection($messages),
+                'Messages retrieved successfully.');
+        }
+
+        return $this->onError(401, 'You do not have permission to view this chat.');
+    }
     public function sendMessage(StoreMessageRequest $request) : JsonResponse
     {
         $data = $request->validated();
@@ -85,24 +111,58 @@ class ChatController extends Controller
         $message->update($request->validated());
         return $this->onSuccess(new MessageResource($message), 'Message updated successfully.');
     }
-    public function deleteMessage(Message $message) : JsonResponse
+    public function deleteMessage(Request $request, Message $message) : JsonResponse
     {
-        $message->delete();
-        return $this->onSuccess(null, 'Message deleted successfully.');
+        if ($request->user()->id === $message->sender_id)
+        //|| Role::isAdmin($request->user()->role))
+        {
+            $message->delete();
+            return $this->onSuccess(null, 'Message deleted successfully.');
+        }
+
+        return $this->onError(401, 'You do not have permission to delete this chat.');
     }
 
-    public function addMember(Chat $chat, User $user) : JsonResponse
+    public function getMembers(Request $request, Chat $chat) : JsonResponse
     {
-        //TODO: Посмотреть про guard аттрибуты
-        ChatMember::create(['user_id' => $user->id, 'chat_id' => $chat->id]);
-        return $this->onSuccess(null, 'Chat member added successfully.', 201);
+        if (ChatMember::where('chat_id', $chat->id)
+            ->where('user_id', $request->user()->id)
+            ->exists()
+        || Role::isAdmin($request->user()->role)) {
+            return $this->onSuccess(new UserCollection($chat->chatMembers()->get()));
+        }
+
+        return $this->onError(401, 'You do not have permission to view this chat.');
     }
-    public function removeMember(Chat $chat, User $user) : JsonResponse
+    public function addMember(Request $request, Chat $chat, User $user) : JsonResponse
     {
-        ChatMember::firstWhere([
-            ['user_id' => $user->id],
-            ['chat_id' => $chat->id]
-        ])->delete();
-        return $this->onSuccess(null, 'Chat member removed successfully.');
+        //TODO: сделать отдельный StoreMemberRequest
+
+        if (ChatMember::where('chat_id', $chat->id)
+            ->where('user_id', $request->user()->id)
+            ->exists()) {
+
+            //TODO: Посмотреть про guard аттрибуты
+            ChatMember::firstOrCreate(['user_id' => $user->id, 'chat_id' => $chat->id]);
+            return $this->onSuccess(null, 'Chat member added successfully.', 201);
+        }
+        return $this->onError(401, 'You are not allowed to use this action.');
+    }
+    public function removeMember(Request $request, Chat $chat, User $user) : JsonResponse
+    {
+        if (Role::isAdmin($request->user()->role) ||
+            ($request->user()->id === $user->id && ChatMember::firstWhere([
+                    ['user_id' => $user->id],
+                    ['chat_id' => $chat->id]
+                ])->exists()))
+        {
+            ChatMember::firstWhere([
+                ['user_id' => $user->id],
+                ['chat_id' => $chat->id]
+            ])->delete();
+            return $this->onSuccess(null, 'Chat member removed successfully.');
+        }
+
+        return $this->onError(401, 'You do not have permission to view this chat.');
     }
 }

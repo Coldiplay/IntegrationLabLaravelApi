@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\ChatController;
 use App\Http\Controllers\API\DriverController;
 use App\Http\Controllers\API\IncidentController;
@@ -18,36 +19,60 @@ use Illuminate\Support\Facades\Route;
 Route::get('/docs', function () {
     return redirect()->to('/spectrum/openapi.html');
 });
-
+Route::post('/register', [AuthController::class, 'register'])->name('api.register');
+Route::post('/login', [AuthController::class, 'login'])->name('api.login');
 
 // Protected routes (требуют авторизации)
 Route::middleware('auth:sanctum')->group(function () {
 
+    Route::post('/logout', [AuthController::class, 'logout'])->name('api.logout');
+    Route::get('/user', [AuthController::class, 'user'])->name('api.user');
+
     Route::group(['prefix' => 'chat'], function () {
-        //CRUD
+
         Route::get('/', [ChatController::class, 'index'])
             ->name('chat.index');
         Route::post('/', [ChatController::class, 'store'])
             ->name('chat.store');
+
+        Route::group(['prefix' => '{chat}'], function () {
+            Route::get('/', [ChatController::class, 'show'])
+                ->name('api.chat.show');
+            Route::put('/', [ChatController::class, 'update'])
+                ->name('api.chat.update');
+            Route::delete('/', [ChatController::class, 'destroy'])
+                ->name('api.chat.destroy');
+
+            Route::get('/members', [ChatController::class, 'getMembers'])
+                ->name('api.chat.members');
+            Route::post('/addmember', [ChatController::class, 'addMember'])
+                ->name('api.chat.addmember');
+            Route::post('/removemember', [ChatController::class, 'removeMember'])
+                ->name('api.chat.removemember');
+
+            Route::get('/messages', [ChatController::class, 'getMessages'])
+                ->name('api.chat.messages');
+            Route::post('/sendMessage', [ChatController::class, 'sendMessage'])
+                ->name('message.send');
+            Route::put('/updateMessage', [ChatController::class, 'updateMessage'])
+                ->name('message.update');
+            Route::delete('/deleteMessage', [ChatController::class, 'deleteMessage'])
+                ->name('message.delete');
+        });
+        /*
         Route::get('/{chat}', [ChatController::class, 'show'])
             ->name('chat.show');
         Route::put('/{chat}', [ChatController::class, 'update'])
             ->name('chat.update');
         Route::delete('/{chat}', [ChatController::class, 'destroy'])
             ->name('chat.destroy');
-        //
-
-        Route::post('/sendMessage', [ChatController::class, 'sendMessage'])
-            ->name('message.send');
-        Route::put('/updateMessage', [ChatController::class, 'updateMessage'])
-            ->name('message.update');
-        Route::delete('/deleteMessage', [ChatController::class, 'deleteMessage'])
-            ->name('message.delete');
-
+        */
+        /*
         Route::post('/{chat}/addMember', [ChatController::class, 'addMember'])
             ->name('chat.add-member');
         Route::post('/{chat}/removeMember', [ChatController::class, 'removeMember'])
             ->name('chat.remove-member');
+        */
     });
 
     Route::group(['prefix' => 'vehicle'], function () {

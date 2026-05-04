@@ -17,9 +17,9 @@ class IncidentController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index($userId) : JsonResponse
+    public function index($driverId) : JsonResponse
     {
-        $incidents = Incident::query()->where('user_id', $userId)->get();
+        $incidents = Incident::query()->where('driver_id', $driverId)->get();
         return $this->onSuccess(new IncidentCollection($incidents), 'Incidents retrieved successfully.');
     }
 

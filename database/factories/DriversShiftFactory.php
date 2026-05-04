@@ -18,13 +18,18 @@ class DriversShiftFactory extends Factory
      */
     public function definition(): array
     {
-        $start = $this->faker->dateTime();
-        //TODO: Посмотреть, хранит ли $end ссылку или копирует значение
-        $end = $start;
+        $start = fake()->dateTimeBetween('-1 month',
+            date_add(now()->toDateTime(),
+                date_interval_create_from_date_string("-2 days")));
+        $end = date_create($start->format('Y-m-d H:i:s'));
         $driversIds = Driver::pluck('user_id')->toArray();
         return [
             'start' => $start,
-            'end' => $this->faker->boolean() ?  $this->faker->dateTimeBetween($start->format('Y-m-d H:i:s'), date_add($end, date_interval_create_from_date_string("8 hours"))) : null,
+            'end' => $this->faker->boolean()
+                //?  $this->faker->dateTimeBetween($start->format('Y-m-d H:i:s'),
+                //    date_add($end, date_interval_create_from_date_string("8 hours")))
+                ? date_add($end, date_interval_create_from_date_string("8 hour"))
+                : null,
             'driver_id' => $this->faker->randomElement($driversIds),
         ];
     }
