@@ -23,7 +23,7 @@ class DriverFactory extends Factory
         $ids = array_diff(User::where('role', Role::Driver)
             ->orWhere('role', Role::DefaultDriver)
             ->pluck('id')->toArray(),
-            Driver::pluck('id')->toArray());
+            Driver::pluck('user_id')->toArray());
         return [
             'user_id' => $this->faker->randomElement($ids),
             'rights' => $this->faker->randomElement(Rights::getValues()),
