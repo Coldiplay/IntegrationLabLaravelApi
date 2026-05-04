@@ -31,6 +31,7 @@ class DatabaseSeeder extends Seeder
             'login' => 'admin',
             'email' => 'admin@example.com',
             'role' => Role::Admin,
+            'password' => 'password'
         ]);
 
         ShippingOrder::factory(15)->create();
