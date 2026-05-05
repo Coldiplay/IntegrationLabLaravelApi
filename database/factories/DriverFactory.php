@@ -20,8 +20,8 @@ class DriverFactory extends Factory
      */
     public function definition(): array
     {
-        $ids = array_diff(User::where('role', Role::Driver)
-            ->orWhere('role', Role::DefaultDriver)
+        $ids = array_diff(User::where('role', Role::DRIVER)
+            ->orWhere('role', Role::DEFAULT_DRIVER)
             ->pluck('id')->toArray(),
             Driver::pluck('user_id')->toArray());
         return [

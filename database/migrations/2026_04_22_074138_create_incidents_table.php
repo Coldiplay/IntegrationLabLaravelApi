@@ -1,8 +1,8 @@
 <?php
 
 use App\Enums\IncidentStatus;
+use App\Models\Driver;
 use App\Models\Shipping;
-use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -18,10 +18,9 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(Shipping::class)
                 ->constrained('shippings');
-            $table->foreignIdFor(User::class, 'driver_id')
-                ->constrained('users');
-            $table->string('description', 500)
-                ->nullable();
+            $table->foreignIdFor(Driver::class, 'driver_id')
+                ->constrained('drivers', 'user_id');
+            $table->string('description', 500);
             $table->dateTime('incident_date');
             $table->enum('status', IncidentStatus::getKeys())
                 ->default(IncidentStatus::getKey(IncidentStatus::Pending));

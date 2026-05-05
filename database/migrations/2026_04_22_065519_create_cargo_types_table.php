@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('cargo_types', function (Blueprint $table) {
             $table->id();
-            $table->string('title', 60)->nullable();
+            $table->string('title', 60);
             $table->timestamps();
         });
     }

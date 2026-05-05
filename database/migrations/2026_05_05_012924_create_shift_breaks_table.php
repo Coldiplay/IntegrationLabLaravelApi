@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\Driver;
+use App\Models\DriversShift;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -12,12 +12,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('drivers_shifts', function (Blueprint $table) {
+        Schema::create('shift_breaks', function (Blueprint $table) {
             $table->id();
+            $table->foreignIdFor(DriversShift::class, 'shift_id')
+                ->constrained('shifts', 'id')
+                ->cascadeOnDelete();
             $table->dateTime('start');
-            $table->dateTime('end')->nullable();
-            $table->foreignIdFor(Driver::class, 'driver_id')
-                ->constrained('drivers', 'user_id');
+            $table->dateTime('end')
+                ->nullable();
             $table->timestamps();
         });
     }
@@ -27,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('drivers_shifts');
+        Schema::dropIfExists('shift_breaks');
     }
 };

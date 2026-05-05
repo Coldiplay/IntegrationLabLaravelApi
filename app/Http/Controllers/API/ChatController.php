@@ -31,7 +31,7 @@ class ChatController extends Controller
      */
     public function index(Request $request, $userId) : JsonResponse
     {
-        if (empty($userId) && Role::isAdmin($request->user()->role)) {
+        if (empty($userId) && Role::isAdminFromValue($request->user()->role)) {
             $chats = Chat::all();
         }
         else{
@@ -61,7 +61,7 @@ class ChatController extends Controller
         if (ChatMember::where('chat_id', $chat->id)
                 ->where('user_id', $request->user()->id)
                 ->exists()
-            || Role::isAdmin($request->user()->role))
+            || Role::isAdminFromValue($request->user()->role))
         {
             return $this->onSuccess(new ChatResource($chat), 'Chat retrieved successfully.');
         }
@@ -128,7 +128,7 @@ class ChatController extends Controller
         if (ChatMember::where('chat_id', $chat->id)
             ->where('user_id', $request->user()->id)
             ->exists()
-        || Role::isAdmin($request->user()->role)) {
+        || Role::isAdminFromValue($request->user()->role)) {
             return $this->onSuccess(new UserCollection($chat->chatMembers()->get()));
         }
 
@@ -150,7 +150,7 @@ class ChatController extends Controller
     }
     public function removeMember(Request $request, Chat $chat, User $user) : JsonResponse
     {
-        if (Role::isAdmin($request->user()->role) ||
+        if (Role::isAdminFromValue($request->user()->role) ||
             ($request->user()->id === $user->id && ChatMember::firstWhere([
                     ['user_id' => $user->id],
                     ['chat_id' => $chat->id]

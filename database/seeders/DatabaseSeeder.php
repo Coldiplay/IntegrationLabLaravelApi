@@ -11,6 +11,7 @@ use App\Models\Driver;
 use App\Models\DriversShift;
 use App\Models\Incident;
 use App\Models\Message;
+use App\Models\ShiftBreak;
 use App\Models\Shipping;
 use App\Models\ShippingOrder;
 use App\Models\TransportCargoType;
@@ -30,7 +31,7 @@ class DatabaseSeeder extends Seeder
         User::factory()->create([
             'login' => 'admin',
             'email' => 'admin@example.com',
-            'role' => Role::Admin,
+            'role' => Role::ADMIN,
             'password' => 'password'
         ]);
 
@@ -42,20 +43,21 @@ class DatabaseSeeder extends Seeder
 
         TransportCargoType::factory(15)->create();
 
-        $driversCount = User::where('role', Role::DefaultDriver)
-            ->orWhere('role', Role::Driver)
+        $driversCount = User::where('role', Role::DEFAULT_DRIVER)
+            ->orWhere('role', Role::DRIVER)
             ->count();
 
         if ($driversCount <= 1)
         {
             User::factory(3)->create([
-                'role' => Role::DefaultDriver,
+                'role' => Role::DEFAULT_DRIVER,
             ]);
             $driversCount = $driversCount + 3;
         }
 
         Driver::factory($driversCount)->create();
         DriversShift::factory(60)->create();
+        ShiftBreak::factory(120)->create();
 
         ChatMember::factory(15)->create();
         Message::factory(200)->create();

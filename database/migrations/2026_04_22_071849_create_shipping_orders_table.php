@@ -15,9 +15,9 @@ return new class extends Migration
         Schema::create('shipping_orders', function (Blueprint $table) {
             $table->id();
             $table->datetime('order_date');
-            $table->string('receiver_fio');
-            $table->string('receiver_phone');
-            $table->string('address');
+            $table->string('receiver_fio', 120);
+            $table->string('receiver_phone', 20);
+            $table->string('address', 255);
             $table->enum('status', OrderStatus::getKeys())->default(OrderStatus::getKey(OrderStatus::InProcessing));
             $table->dateTime('shipping_date'); //Каво? надо же какой-нибудь wished_receive_date и (опционально) wished_receive_time (nullable)
             $table->dateTime('sent_date')->nullable();
