@@ -4,6 +4,11 @@ namespace App\Enums;
 
 use BenSampo\Enum\Enum;
 
+/**
+ * @method static static Pending()
+ * @method static static InProgress()
+ * @method static static Resolved()
+ */
 final class IncidentStatus extends Enum
 {
     const Pending = 0;

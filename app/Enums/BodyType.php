@@ -4,6 +4,16 @@ namespace App\Enums;
 
 use BenSampo\Enum\Enum;
 
+/**
+ * @method static static Awning()
+ * @method static static Van()
+ * @method static static Isothermal()
+ * @method static static Refrigerator()
+ * @method static static OnboardPlatform()
+ * @method static static DumpTruck()
+ * @method static static Tank()
+ * @method static static ContainerShip()
+ */
 final class BodyType extends Enum
 {
     const Awning = 0;

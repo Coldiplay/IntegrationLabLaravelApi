@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Enums\Rights;
+use App\Enums\Role;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -14,7 +15,7 @@ class StoreDriverRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return Role::fromValue($this->user()->role)->in([Role::Admin(), Role::Logistician()]);
     }
 
     /**

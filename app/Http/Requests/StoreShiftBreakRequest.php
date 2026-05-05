@@ -2,8 +2,10 @@
 
 namespace App\Http\Requests;
 
+use App\Models\DriversShift;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreShiftBreakRequest extends FormRequest
 {
@@ -23,7 +25,9 @@ class StoreShiftBreakRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'shift_id' => ['required', 'exists:shifts,id'],
+            'start' => ['required', Rule::dateTime()->afterOrEqual(DriversShift::find($this->shift_id, 'start')->start)],
+            'end' => ['sometimes', Rule::dateTime()->after('start')],
         ];
     }
 }

@@ -4,6 +4,13 @@ namespace App\Enums;
 
 use BenSampo\Enum\Enum;
 
+/**
+ * @method static static InProcessing()
+ * @method static static ReadyToShip()
+ * @method static static Shipping()
+ * @method static static Delivered()
+ * @method static static Incident()
+ */
 final class ShippingStatus extends Enum
 {
     const InProcessing = 0;

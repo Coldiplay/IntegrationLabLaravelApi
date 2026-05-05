@@ -2,6 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\Role;
+use App\Enums\ShippingStatus;
+use App\Models\Shipping;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -13,7 +16,11 @@ class StoreDriversShiftRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        $user = $this->user();
+        return Role::isDriver($user)
+            && Shipping::where('designated_driver_id', $user->id)
+                ->where('shipping_status', ShippingStatus::Shipping()->key) //TODO: Вот не знаю надо ли?
+                ->exists();
     }
 
     /**

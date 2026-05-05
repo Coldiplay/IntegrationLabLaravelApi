@@ -6,12 +6,12 @@ use App\Models\User;
 use BenSampo\Enum\FlaggedEnum;
 
 /**
- * @method static static User()
- * @method static static Admin()
- * @method static static Driver()
- * @method static static Logistician()
- * @method static static DefaultLogistician()
- * @method static static DefaultDriver()
+ * @method static static USER()
+ * @method static static ADMIN()
+ * @method static static DRIVER()
+ * @method static static LOGISTICIAN()
+ * @method static static DEFAULT_LOGISTICIAN()
+ * @method static static DEFAULT_DRIVER()
  * @method static static None()
  */
 final class Role extends FlaggedEnum
@@ -46,6 +46,11 @@ final class Role extends FlaggedEnum
         return self::isLogistician($user->role);
     }
 
+    public static function isDriver(User $user): bool
+    {
+        return self::isDriverFromValue($user->role);
+    }
+
     public static function isAdminFromValue(int $value): bool
     {
         return self::fromValue($value)->is(Role::Admin());
@@ -53,5 +58,9 @@ final class Role extends FlaggedEnum
     public static function isLogisticianFromValue(int $value): bool
     {
         return self::fromValue($value)->is(Role::Logistician());
+    }
+    public static function isDriverFromValue(int $value): bool
+    {
+        return self::fromValue($value)->is(Role::Driver());
     }
 }

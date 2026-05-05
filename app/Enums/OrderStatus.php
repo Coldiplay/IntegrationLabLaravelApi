@@ -4,6 +4,10 @@ namespace App\Enums;
 
 use BenSampo\Enum\Enum;
 
+/**
+ * @method static static InProcessing()
+ * @method static static InProgress()
+ */
 final class OrderStatus extends Enum
 {
     const InProcessing = 0;
