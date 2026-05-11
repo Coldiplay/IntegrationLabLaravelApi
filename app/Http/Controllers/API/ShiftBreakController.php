@@ -8,9 +8,10 @@ use App\Http\Library\ApiHelpers;
 use App\Http\Requests\StoreShiftBreakRequest;
 use App\Http\Requests\UpdateShiftBreakRequest;
 use App\Http\Resources\ShiftBreakCollection;
-use App\Models\DriversShift;
+use App\Http\Resources\ShiftBreakResource;
 use App\Models\ShiftBreak;
 use Illuminate\Http\Request;
+use PhpParser\Builder;
 
 class ShiftBreakController extends Controller
 {
@@ -18,19 +19,17 @@ class ShiftBreakController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request, $shiftId)
+    public function index(Request $request)
     {
-        if (empty($shiftId) && Role::isAdmin($request->user())) {
+        $this->authorize('viewAny', ShiftBreak::class);
+
+        $user = $request->user();
+
+        if (Role::isAdmin($user) || Role::isLogistician($user)) {
             return $this->onSuccess(new ShiftBreakCollection(ShiftBreak::all()));
         }
 
-        if (DriversShift::where('id', $shiftId)
-            ->where('driver_id', $request->user()->id)
-            ->exists()) {
-            return $this->onSuccess(new ShiftBreakCollection(ShiftBreak::where('shift_id', $shiftId)), 'Shift breaks retrieved successfully.');
-        }
-
-        return $this->onError(401, 'You do not have permission to access this shift.');
+        return $this->onSuccess(new ShiftBreakCollection($user->driver->breaks()), 'Shift breaks retrieved successfully.');
     }
 
     /**
@@ -38,7 +37,9 @@ class ShiftBreakController extends Controller
      */
     public function store(StoreShiftBreakRequest $request)
     {
-
+        $this->authorize('create', ShiftBreak::class);
+        $shiftBreak = ShiftBreak::create($request->validated());
+        return $this->onSuccess(new ShiftBreakResource($shiftBreak), 'Shift break created successfully.');
     }
 
     /**
@@ -46,7 +47,8 @@ class ShiftBreakController extends Controller
      */
     public function show(ShiftBreak $shiftBreak)
     {
-        //
+        $this->authorize('view', $shiftBreak);
+        return $this->onSuccess(new ShiftBreakResource($shiftBreak), 'Shift break retrieved successfully.');
     }
 
     /**
@@ -54,7 +56,9 @@ class ShiftBreakController extends Controller
      */
     public function update(UpdateShiftBreakRequest $request, ShiftBreak $shiftBreak)
     {
-        //
+        $this->authorize('update', $shiftBreak);
+        $shiftBreak->update($request->validated());
+        return $this->onSuccess(new ShiftBreakResource($shiftBreak), 'Shift break updated successfully.');
     }
 
     /**
@@ -62,6 +66,8 @@ class ShiftBreakController extends Controller
      */
     public function destroy(ShiftBreak $shiftBreak)
     {
-        //
+        $this->authorize('delete', $shiftBreak);
+        $shiftBreak->delete();
+        return $this->onSuccess(null, 'Shift break deleted successfully.');
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Enums\IncidentStatus;
+use App\Enums\Role;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -14,7 +15,7 @@ class UpdateIncidentRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,12 +25,15 @@ class UpdateIncidentRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            'description' => 'sometimes|string|max:500',
-            'status' => [
-                'required',
-                Rule::in(IncidentStatus::getKeys())
+        return Role::isDriver($this->user())
+            ? [
+                'description' => 'sometimes|string|max:500'
             ]
-        ];
+            : [
+                'description' => 'sometimes|string|max:500',
+                'status' => [
+                    'required',
+                    Rule::in(IncidentStatus::getKeys())
+                ]];
     }
 }

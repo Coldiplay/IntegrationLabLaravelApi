@@ -19,6 +19,7 @@ class VehicleController extends Controller
      */
     public function index() : JsonResponse
     {
+        $this->authorize('viewAny', Vehicle::class);
         return $this->onSuccess(new VehicleCollection(Vehicle::all()), 'Vehicles retrieved successfully.');
     }
 
@@ -27,6 +28,7 @@ class VehicleController extends Controller
      */
     public function store(StoreVehicleRequest $request)
     {
+        $this->authorize('create', Vehicle::class);
         $vehicle = Vehicle::create($request->validated());
         return $this->onSuccess(new VehicleResource($vehicle), 'Vehicle created successfully.');
     }
@@ -36,6 +38,7 @@ class VehicleController extends Controller
      */
     public function show(Vehicle $vehicle)
     {
+        $this->authorize('view', $vehicle);
         return $this->onSuccess(new VehicleResource($vehicle), 'Vehicle retrieved successfully.');
     }
 
@@ -44,6 +47,7 @@ class VehicleController extends Controller
      */
     public function update(UpdateVehicleRequest $request, Vehicle $vehicle)
     {
+        $this->authorize('update', $vehicle);
         $vehicle->update($request->validated());
         return $this->onSuccess(new VehicleResource($vehicle), 'Vehicle updated successfully.');
     }
@@ -53,6 +57,7 @@ class VehicleController extends Controller
      */
     public function destroy(Vehicle $vehicle)
     {
+        $this->authorize('delete', $vehicle);
         $vehicle->delete();
         return $this->onSuccess(null, 'Vehicle deleted successfully.');
     }

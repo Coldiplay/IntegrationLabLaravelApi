@@ -104,7 +104,7 @@ class ChatController extends Controller
 
     public function getMessages(Request $request, Chat $chat) : JsonResponse
     {
-        //TODO: Подумать, в какую политику запихнуть это
+        $this->authorize('view', [Chat::class, $chat]);
         if (ChatMember::where('chat_id', $chat->id)
             ->where('user_id', $request->user()->id)
             ->exists()) {

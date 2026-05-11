@@ -19,6 +19,7 @@ class IncidentController extends Controller
      */
     public function index($driverId) : JsonResponse
     {
+        $this->authorize('viewAny', Incident::class);
         $incidents = Incident::query()->where('driver_id', $driverId)->get();
         return $this->onSuccess(new IncidentCollection($incidents), 'Incidents retrieved successfully.');
     }
@@ -28,6 +29,7 @@ class IncidentController extends Controller
      */
     public function store(StoreIncidentRequest $request) : JsonResponse
     {
+        $this->authorize('create', Incident::class);
         $incident = Incident::create($request->validated());
         return $this->onSuccess(new IncidentResource($incident), 'Incident successfully created.', 201);
     }
@@ -37,6 +39,7 @@ class IncidentController extends Controller
      */
     public function show(Incident $incident) : JsonResponse
     {
+        $this->authorize('view', $incident);
         return $this->onSuccess(new IncidentResource($incident), 'Incident successfully created.');
     }
 
@@ -45,6 +48,7 @@ class IncidentController extends Controller
      */
     public function update(UpdateIncidentRequest $request, Incident $incident) : JsonResponse
     {
+        $this->authorize('update', $incident);
         $incident->update($request->validated());
         return $this->onSuccess(new IncidentResource($incident), 'Incident successfully updated.');
     }
@@ -54,6 +58,7 @@ class IncidentController extends Controller
      */
     public function destroy(Incident $incident) : JsonResponse
     {
+        $this->authorize('delete', $incident);
         $incident->delete();
         return $this->onSuccess(null, 'Incident successfully deleted.');
     }

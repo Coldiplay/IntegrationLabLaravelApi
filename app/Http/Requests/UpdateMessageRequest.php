@@ -13,9 +13,7 @@ class UpdateMessageRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return Message::where('message_id', $this->message_id)
-            ->where('sender_id', $this->user()->id)
-            ->exists();
+        return true;
     }
 
     /**

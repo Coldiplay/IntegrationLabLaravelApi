@@ -25,7 +25,6 @@ class UpdateShiftBreakRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'shift_break_id' => 'required|exists:shift_breaks,id',
             'end' => [
                 'required',
                 Rule::dateTime()->after(ShiftBreak::findOrFail($this->shift_break_id)->start)

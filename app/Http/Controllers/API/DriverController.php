@@ -18,6 +18,7 @@ class DriverController extends Controller
      */
     public function index()
     {
+        $this->authorize('viewAny', Driver::class);
         return $this->onSuccess(new DriverCollection(Driver::all()), 'Drivers retrieved successfully.');
     }
 
@@ -26,6 +27,7 @@ class DriverController extends Controller
      */
     public function store(StoreDriverRequest $request)
     {
+        $this->authorize('create', Driver::class);
         $driver = Driver::create($request->validated());
         return $this->onSuccess(new DriverResource($driver), 'Driver registered successfully.');
     }
@@ -35,6 +37,7 @@ class DriverController extends Controller
      */
     public function show(Driver $driver)
     {
+        $this->authorize('view', $driver);
         return $this->onSuccess(new DriverResource($driver), 'Driver retrieved successfully.');
     }
 
@@ -43,6 +46,7 @@ class DriverController extends Controller
      */
     public function update(UpdateDriverRequest $request, Driver $driver)
     {
+        $this->authorize('update', $driver);
         $driver->update($request->validated());
         return $this->onSuccess(new DriverResource($driver), 'Driver updated successfully.');
     }
@@ -52,6 +56,7 @@ class DriverController extends Controller
      */
     public function destroy(Driver $driver)
     {
+        $this->authorize('delete', $driver);
         $driver->delete();
         return $this->onSuccess(new DriverResource($driver), 'Driver deleted successfully.');
     }

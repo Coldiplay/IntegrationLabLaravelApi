@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\Role;
 use App\Models\DriversShift;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
@@ -14,7 +15,9 @@ class StoreShiftBreakRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return empty(DriversShift::find($this->shift_id, 'end')->end)
+            || Role::isLogistician($this->user())
+            || Role::isAdmin($this->user());
     }
 
     /**
@@ -24,9 +27,10 @@ class StoreShiftBreakRequest extends FormRequest
      */
     public function rules(): array
     {
+        $shift = DriversShift::find($this->shift_id, 'start');
         return [
             'shift_id' => ['required', 'exists:shifts,id'],
-            'start' => ['required', Rule::dateTime()->afterOrEqual(DriversShift::find($this->shift_id, 'start')->start)],
+            'start' => ['required', Rule::dateTime()->afterOrEqual($shift->start)],
             'end' => ['sometimes', Rule::dateTime()->after('start')],
         ];
     }

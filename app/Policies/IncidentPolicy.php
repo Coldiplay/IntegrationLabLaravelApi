@@ -51,7 +51,7 @@ class IncidentPolicy
     public function update(User $user, Incident $incident): Response
     {
         return $user->id === $incident->driver_id
-            //TODO: Надо ли добавлять логиста?
+            || Role::isLogistician($user)
             || Role::isAdmin($user)
             ? Response::allow()
             : Response::deny('You do not have permission to update this incident.');

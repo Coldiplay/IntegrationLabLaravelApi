@@ -117,7 +117,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::delete('/{shipping}', [ShippingController::class, 'destroy'])
             ->name('api.shipping.destroy');
 
-        Route::put('/{shipping}/start', [ShippingController::class, 'confirmStart'])
+        Route::patch('/{shipping}/start', [ShippingController::class, 'confirmStart'])
             ->name('api.shipping.start');
         Route::patch('/{shipping}/end', [ShippingController::class, 'confirmEnd'])
             ->name('api.shipping.end');

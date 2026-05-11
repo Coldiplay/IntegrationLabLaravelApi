@@ -32,11 +32,6 @@ class TransportCargoTypeFactory extends Factory
                     break;
                 }
             }
-
-            //$availableTypes = array_diff($cargoTypes, $vehicle->supportedCargoTypes()->pluck('id')->toArray());
-            //if (!empty($availableTypes)) {
-            //
-            //}
         }
 
         if (empty($vehicleId)) {

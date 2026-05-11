@@ -12,9 +12,12 @@ class ShippingOrderPolicy
     /**
      * Determine whether the user can view any models.
      */
-    public function viewAny(User $user): bool
+    public function viewAny(User $user): Response
     {
-        return false;
+        return Role::isLogistician($user)
+            || Role::isAdmin($user)
+            ? Response::allow()
+            : Response::deny('You are not authorized to view any shipping orders.');
     }
 
     /**

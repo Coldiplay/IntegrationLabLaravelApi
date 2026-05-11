@@ -26,10 +26,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        //TEST
-        //$test = Vehicle::factory(1)->create()->first();
-        //$array = $test->supportedCargoTypes()->get();
-
         //Не зависят от других factory
         User::factory(15)->create();
         User::factory()->create([
@@ -52,6 +48,7 @@ class DatabaseSeeder extends Seeder
         Vehicle::factory(15)->create();
         //
 
+        //TODO: Оно работает здесь, но не работает в factory (дублирует записи)
         //TEST
         $cargoTypes = CargoType::all()->pluck('id')->toArray();
         $vehicles = Vehicle::all();
