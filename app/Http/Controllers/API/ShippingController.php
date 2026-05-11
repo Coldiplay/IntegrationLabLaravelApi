@@ -17,7 +17,7 @@ class ShippingController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index($driverId) : JsonResponse
+    public function index(int $driverId) : JsonResponse
     {
         $shippings = Shipping::query()->where('driver_id', $driverId)->get();
         return $this->onSuccess(new ShippingCollection($shippings), 'Shippings retrieved successfully.');

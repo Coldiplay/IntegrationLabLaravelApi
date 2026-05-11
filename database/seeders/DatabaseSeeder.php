@@ -26,6 +26,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        //TEST
+        //$test = Vehicle::factory(1)->create()->first();
+        //$array = $test->supportedCargoTypes()->get();
+
         //Не зависят от других factory
         User::factory(15)->create();
         User::factory()->create([
@@ -35,13 +39,50 @@ class DatabaseSeeder extends Seeder
             'password' => 'password'
         ]);
 
+        User::factory()->create([
+            'login' => 'driver',
+            'email' => 'driver@example.com',
+            'password' => 'password',
+            'role' => Role::DEFAULT_DRIVER
+        ]);
+
         ShippingOrder::factory(15)->create();
         CargoType::factory(15)->create();
         Chat::factory(15)->create();
         Vehicle::factory(15)->create();
         //
 
-        TransportCargoType::factory(15)->create();
+        //TEST
+        $cargoTypes = CargoType::all()->pluck('id')->toArray();
+        $vehicles = Vehicle::all();
+        $vehicleId = null;
+        $cargoTypeId = null;
+        foreach ($vehicles as $vehicle) {
+            $blockedIds = $vehicle->supportedCargoTypes()->pluck('id')->toArray();
+            foreach ($cargoTypes as $cargoType) {
+                if (!in_array($cargoType, $blockedIds)) {
+                    $vehicleId = $vehicle->id;
+                    $cargoTypeId = $cargoType;
+                    break;
+                }
+            }
+        }
+
+        if (empty($vehicleId)) {
+            $vehicleId = Vehicle::factory(1)->create()->first()->id;
+            $cargoTypeId = CargoType::factory(1)->create()->first()->id;
+        }
+        try {
+            TransportCargoType::create(['vehicle_id' => $vehicleId, 'cargo_type_id' => $cargoTypeId]);
+        }
+        catch (\Exception $exception) {
+            throw new \Exception('vehicleId ' . $vehicleId . ', cargoTypeId ' . $cargoTypeId);
+        }
+
+        //TESTEND
+
+
+        //TransportCargoType::factory(15)->create();
 
         $driversCount = User::where('role', Role::DEFAULT_DRIVER)
             ->orWhere('role', Role::DRIVER)

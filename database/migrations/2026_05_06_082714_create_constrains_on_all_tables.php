@@ -32,6 +32,17 @@ return new class extends Migration
                 ->references('id')
                 ->on('vehicles')
                 ->cascadeOnDelete();
+            $table->foreign('designated_driver_id')
+                ->references('user_id')
+                ->on('drivers')
+                ->cascadeOnDelete();
+        });
+
+        Schema::table('shift_breaks', function (Blueprint $table) {
+            $table->foreign('shift_id')
+                ->references('id')
+                ->on('drivers_shifts')
+                ->cascadeOnDelete();
         });
     }
 

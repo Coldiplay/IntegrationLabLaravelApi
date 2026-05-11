@@ -6,6 +6,7 @@ use App\Casts\DimensionsCast;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 class Vehicle extends Model
 {
@@ -17,6 +18,13 @@ class Vehicle extends Model
         'body_size' => DimensionsCast::class . ':body_size',
     ];
 
+
+    public function supportedCargoTypes() : HasManyThrough
+    {
+        return $this->hasManyThrough(CargoType::class, TransportCargoType::class,
+            secondKey: 'id',
+            secondLocalKey: 'cargo_type_id');
+    }
 
     public function shippings() : HasMany
     {

@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Models\Chat;
 use App\Models\Message;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
@@ -19,33 +20,43 @@ class MessagePolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Message $message): bool
+    public function view(User $user, Message $message): Response
     {
-        return false;
+        return $message->chat->chatMembers()->where('user_id', $user->id)->exists()
+            ? Response::allow()
+            : Response::deny('You do not have permission to view this message.');
     }
 
     /**
      * Determine whether the user can create models.
      */
-    public function create(User $user): bool
+    public function create(User $user, Chat $chat): Response
     {
-        return false;
+        return $chat->chatMembers()
+            ->where('user_id', $user->id)
+            ->exists()
+            ? Response::allow()
+            : Response::deny('You are not a member of this chat.');
     }
 
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Message $message): bool
+    public function update(User $user, Message $message): Response
     {
-        return false;
+        return $user->id == $message->sender_id
+            ? Response::allow()
+            : Response::deny('You do not have permission to edit this message.');
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Message $message): bool
+    public function delete(User $user, Message $message): Response
     {
-        return false;
+        return $message->sender_id === $user->id
+            ? Response::allow()
+            : Response::deny('You do not own this message.');
     }
 
     /**

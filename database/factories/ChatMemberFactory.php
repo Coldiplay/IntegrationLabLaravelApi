@@ -19,10 +19,18 @@ class ChatMemberFactory extends Factory
      */
     public function definition(): array
     {
-        $chatIds = Chat::pluck('id')->toArray();
-        $userIds = User::pluck('id')->toArray();
+        $chat = Chat::all()->random();
+        //$chatIds = Chat::pluck('id')->toArray();
+        $existingMembers = $chat->chatMembers()->pluck('id')->toArray();
+        $userIds = array_diff(User::pluck('id')->toArray(), $existingMembers);
+        if(empty($userIds))
+        {
+            $user = User::factory(1)->create();
+            $userIds = $user->pluck('id')->toArray();
+        }
+
         return [
-            'chat_id' => $this->faker->randomElement($chatIds),
+            'chat_id' => $chat->id,
             'user_id' => $this->faker->randomElement($userIds),
         ];
     }

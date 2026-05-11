@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('email', 64)->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password', 512);
-            $table->mediumInteger('role', unsigned: true)->default(Role::User());
+            $table->mediumInteger('role', unsigned: true)->default(Role::USER);
             $table->rememberToken();
             $table->timestamps();
         });

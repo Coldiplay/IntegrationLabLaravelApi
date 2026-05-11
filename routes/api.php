@@ -29,11 +29,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', [AuthController::class, 'user'])->name('api.user');
 
     Route::group(['prefix' => 'chat'], function () {
-
         Route::get('/', [ChatController::class, 'index'])
-            ->name('chat.index');
+            ->name('api.chat.index');
         Route::post('/', [ChatController::class, 'store'])
-            ->name('chat.store');
+            ->name('api.chat.store');
 
         Route::group(['prefix' => '{chat}'], function () {
             Route::get('/', [ChatController::class, 'show'])
@@ -44,20 +43,20 @@ Route::middleware('auth:sanctum')->group(function () {
                 ->name('api.chat.destroy');
 
             Route::get('/members', [ChatController::class, 'getMembers'])
-                ->name('api.chat.members');
-            Route::post('/addmember', [ChatController::class, 'addMember'])
-                ->name('api.chat.addmember');
-            Route::post('/removemember', [ChatController::class, 'removeMember'])
-                ->name('api.chat.removemember');
+                ->name('api.chat.members.index');
+            Route::post('/addMember', [ChatController::class, 'addMember'])
+                ->name('api.chat.members.store');
+            Route::delete('/removeMember/{user}', [ChatController::class, 'removeMember'])
+                ->name('api.chat.members.destroy');
 
             Route::get('/messages', [ChatController::class, 'getMessages'])
-                ->name('api.chat.messages');
+                ->name('api.chat.messages.index');
             Route::post('/sendMessage', [ChatController::class, 'sendMessage'])
-                ->name('message.send');
+                ->name('api.chat.message.store');
             Route::put('/updateMessage', [ChatController::class, 'updateMessage'])
-                ->name('message.update');
+                ->name('api.chat.message.update');
             Route::delete('/deleteMessage', [ChatController::class, 'deleteMessage'])
-                ->name('message.delete');
+                ->name('api.chat.message.destroy');
         });
         /*
         Route::get('/{chat}', [ChatController::class, 'show'])
@@ -78,77 +77,83 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::group(['prefix' => 'vehicle'], function () {
         //CRUD
         Route::get('/', [VehicleController::class, 'index'])
-            ->name('vehicle.index');
+            ->name('api.vehicle.index');
         Route::post('/', [VehicleController::class, 'store'])
-            ->name('vehicle.store');
+            ->name('api.vehicle.store');
         Route::get('/{vehicle}', [VehicleController::class, 'show'])
-            ->name('vehicle.show');
+            ->name('api.vehicle.show');
         Route::put('/{vehicle}', [VehicleController::class, 'update'])
-            ->name('vehicle.update');
+            ->name('api.vehicle.update');
         Route::delete('/{vehicle}', [VehicleController::class, 'destroy'])
-            ->name('vehicle.destroy');
+            ->name('api.vehicle.destroy');
         //
     });
 
     Route::group(['prefix' => 'incident'], function () {
         //CRUD
         Route::get('/', [IncidentController::class, 'index'])
-            ->name('incident.index');
+            ->name('api.incident.index');
         Route::post('/', [IncidentController::class, 'store'])
-            ->name('incident.store');
+            ->name('api.incident.store');
         Route::get('/{incident}', [IncidentController::class, 'show'])
-            ->name('incident.show');
+            ->name('api.incident.show');
         Route::put('/{incident}', [IncidentController::class, 'update'])
-            ->name('incident.update');
+            ->name('api.incident.update');
         Route::delete('/{incident}', [IncidentController::class, 'destroy'])
-            ->name('incident.destroy');
+            ->name('api.incident.destroy');
         //
     });
 
     Route::group(['prefix' => 'shipping'], function () {
         //CRUD
         Route::get('/', [ShippingController::class, 'index'])
-            ->name('shipping.index');
+            ->name('api.shipping.index');
         Route::post('/', [ShippingController::class, 'store'])
-            ->name('shipping.store');
+            ->name('api.shipping.store');
         Route::get('/{shipping}', [ShippingController::class, 'show'])
-            ->name('shipping.show');
+            ->name('api.shipping.show');
         Route::put('/{shipping}', [ShippingController::class, 'update'])
-            ->name('shipping.update');
+            ->name('api.shipping.update');
         Route::delete('/{shipping}', [ShippingController::class, 'destroy'])
-            ->name('shipping.destroy');
+            ->name('api.shipping.destroy');
 
-        Route::Post('/{shipping}/start', [ShippingController::class, 'confirmStart']);
-        Route::Post('/{shipping}/ent', [ShippingController::class, 'confirmEnd']);
+        Route::put('/{shipping}/start', [ShippingController::class, 'confirmStart'])
+            ->name('api.shipping.start');
+        Route::patch('/{shipping}/end', [ShippingController::class, 'confirmEnd'])
+            ->name('api.shipping.end');
         //
     });
 
     Route::group(['prefix' => 'shipping-order'], function () {
         //CRUD
         Route::get('/', [ShippingOrderController::class, 'index'])
-            ->name('shipping-order.index');
+            ->name('api.shipping-order.index');
         Route::post('/', [ShippingOrderController::class, 'store'])
-            ->name('shipping-order.store');
+            ->name('api.shipping-order.store');
         Route::get('/{shippingOrder}', [ShippingOrderController::class, 'show'])
-            ->name('shipping-order.show');
+            ->name('api.shipping-order.show');
         Route::put('/{shippingOrder}', [ShippingOrderController::class, 'update'])
-            ->name('shipping-order.update');
+            ->name('api.shipping-order.update');
         Route::delete('/{shippingOrder}', [ShippingOrderController::class, 'destroy'])
-            ->name('shipping-order.destroy');
+            ->name('api.shipping-order.destroy');
     });
 
     Route::group(['prefix' => 'driver'], function () {
         //CRUD
         Route::get('/', [DriverController::class, 'index'])
-            ->name('driver.index');
+            ->name('api.driver.index');
         Route::post('/', [DriverController::class, 'store'])
-            ->name('driver.store');
+            ->name('api.driver.store');
         Route::get('/{driver}', [DriverController::class, 'show'])
-            ->name('driver.show');
+            ->name('api.driver.show');
         Route::put('/{driver}', [DriverController::class, 'update'])
-            ->name('driver.update');
+            ->name('api.driver.update');
         Route::delete('/{driver}', [DriverController::class, 'destroy'])
-            ->name('driver.destroy');
+            ->name('api.driver.destroy');
         //
     });
 });
+
+
+
+

@@ -3,9 +3,9 @@
 namespace Database\Factories;
 
 use App\Models\Chat;
+use App\Models\ChatMember;
 use App\Models\Message;
 use App\Models\User;
-use DateTime;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -20,6 +20,15 @@ class MessageFactory extends Factory
      */
     public function definition(): array
     {
+        $chat = Chat::all()->random();
+        $userIds = $chat->chatMembers()->pluck('id')->toArray();
+        if (empty($userIds))
+        {
+            $userId = User::all()->random()->id;
+            ChatMember::create(['user_id' => $userId, 'chat_id' => $chat->id]);
+            $userIds[] = $userId;
+        }
+        /*
         $userIds = User::pluck('id')->toArray();
         $chats = Chat::all();
         $chatId = -1;
@@ -33,11 +42,13 @@ class MessageFactory extends Factory
         }
 
         foundUserId:
+        */
+
         return [
             'content' => $this->faker->realText(300),
-            'date' => new DateTime('now'),
+            //'date' => new DateTime('now'),
             'sender_id' => $this->faker->randomElement($userIds),
-            'chat_id' => $chatId,
+            'chat_id' => $chat->id,
         ];
     }
 }

@@ -33,7 +33,15 @@ class StoreVehicleRequest extends FormRequest
             'lifting_capacity' => ['required', 'numeric', 'min:0'],
             'body_type' => ['required', 'string', Rule::in(BodyType::getKeys())],
 
-            //TODO: Надо ли указывать dimensions как класс (т.к. указан cast) или как отдельные поля?
+            'vehicle_size' => ['required', 'json'],
+            'vehicle_size.length' => ['required', 'numeric', 'min:0'],
+            'vehicle_size.width' => ['required', 'numeric', 'min:0'],
+            'vehicle_size.height' => ['required', 'numeric', 'min:0'],
+
+            'body_size' => ['required', 'json'],
+            'body_size.length' => ['required', 'numeric', 'min:0'],
+            'body_size.width' => ['required', 'numeric', 'min:0'],
+            'body_size.height' => ['required', 'numeric', 'min:0'],
 
             'max_cargo_volume' => ['required', 'numeric', 'min:0'],
             'vehicle_weight' => ['required', 'numeric', 'min:0'],

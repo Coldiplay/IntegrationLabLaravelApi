@@ -11,6 +11,8 @@ class Chat extends Model
 {
     /** @use HasFactory<\Database\Factories\ChatFactory> */
     use HasFactory;
+    protected $guarded = [];
+
     public function chatMembers() : HasManyThrough
     {
         return $this->hasManyThrough(User::class, ChatMember::class,

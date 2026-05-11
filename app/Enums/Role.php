@@ -36,31 +36,31 @@ final class Role extends FlaggedEnum
         };
     }
 
-    public static function isAdmin(User $user): bool
+    public static function isAdmin(User|int $user): bool
     {
-        return self::isAdmin($user->role);
+        return self::isCheck($user, Role::ADMIN);
     }
 
-    public static function isLogistician(User $user): bool
+    public static function isLogistician(User|int $user): bool
     {
-        return self::isLogistician($user->role);
+        return self::isCheck($user, Role::LOGISTICIAN);
     }
 
-    public static function isDriver(User $user): bool
+    public static function isDriver(User|int $user): bool
     {
-        return self::isDriverFromValue($user->role);
+        return self::isCheck($user, Role::DRIVER);
     }
 
-    public static function isAdminFromValue(int $value): bool
+    private static function checkFlag(int $value, int $flag): bool
     {
-        return self::fromValue($value)->is(Role::Admin());
+        return Role::fromValue($value)->hasFlag($flag);
     }
-    public static function isLogisticianFromValue(int $value): bool
+    private static function isCheck($user, int $flag): bool
     {
-        return self::fromValue($value)->is(Role::Logistician());
-    }
-    public static function isDriverFromValue(int $value): bool
-    {
-        return self::fromValue($value)->is(Role::Driver());
+        return match (gettype($user)) {
+            'integer' => self::checkFlag(User::find($user)->role, $flag),
+            'object' => self::checkFlag($user->role, $flag),
+            default => false,
+        };
     }
 }

@@ -17,7 +17,7 @@ class ChatResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'isPrivateChat' => $this->isPrivateChat,
+            'is_private_chat' => $this->is_private_chat,
             'relationships' =>
             [
                 'messages' => $this->whenLoaded('messages', function () {

@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests;
 
-use App\Models\ChatMember;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -13,9 +12,7 @@ class StoreMessageRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return ChatMember::where('chat_id', $this->chat_id)
-            ->where('user_id', $this->user()->id)
-            ->exists();
+        return true;
     }
 
     /**
@@ -26,8 +23,7 @@ class StoreMessageRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'content' => ['required', 'string', 'max:255', 'min:1'],
-            'chat_id' => ['required', 'exists:chats,id'],
+            'content' => ['required', 'string', 'max:255', 'min:1']
         ];
     }
 }

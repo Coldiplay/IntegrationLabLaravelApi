@@ -14,9 +14,7 @@ return new class extends Migration
     {
         Schema::create('shift_breaks', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(DriversShift::class, 'shift_id')
-                ->constrained('shifts', 'id')
-                ->cascadeOnDelete();
+            $table->foreignIdFor(DriversShift::class, 'shift_id');
             $table->dateTime('start');
             $table->dateTime('end')
                 ->nullable();

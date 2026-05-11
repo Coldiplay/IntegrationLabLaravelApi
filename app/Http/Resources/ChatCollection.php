@@ -18,13 +18,14 @@ class ChatCollection extends ResourceCollection
             return [
                 'id' => $chat->id,
                 'name' => $chat->name,
-                'isPrivateChat' => $chat->isPrivateChat,
+                'isPrivateChat' => (bool)$chat->is_private_chat,
 
                 'relationships' =>
                 [
-                    'members' => new ChatMembersCollection($chat->members),
+                    //TODO: Сделать ChatMembersCollection
+                    'members' => 0//new ChatMembersCollection($chat->members),
                 ],
             ];
-        });
+        })->toArray();
     }
 }

@@ -17,10 +17,11 @@ class StoreDriversShiftRequest extends FormRequest
     public function authorize(): bool
     {
         $user = $this->user();
-        return Role::isDriver($user)
-            && Shipping::where('designated_driver_id', $user->id)
+        return Shipping::where('designated_driver_id', $user->id)
                 ->where('shipping_status', ShippingStatus::Shipping()->key) //TODO: Вот не знаю надо ли?
-                ->exists();
+                ->exists()
+            || Role::isLogistician($user)
+            || Role::isAdmin($user);
     }
 
     /**

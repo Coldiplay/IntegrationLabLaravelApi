@@ -11,6 +11,7 @@ class Message extends Model
 {
     /** @use HasFactory<\Database\Factories\MessageFactory> */
     use HasFactory, SoftDeletes;
+    protected $guarded = [];
 
     public function user() : BelongsTo
     {

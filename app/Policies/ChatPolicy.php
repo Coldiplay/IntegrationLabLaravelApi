@@ -2,21 +2,22 @@
 
 namespace App\Policies;
 
+use App\Enums\Role;
 use App\Models\Chat;
-use App\Models\ChatMember;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
 class ChatPolicy
 {
     /**
-     * Determine whether the user can view any models.
+     * Determine whether the user can view all models where user in.
      */
-    public function viewAny(User $user, $userId): Response
+    public function viewAllUserChat(User $user): Response
     {
-        return ($user->id === $userId)
-            ? Response::allow()
-            : Response::deny('You do not have permission to view other people\'s chats.');
+        return Response::allow();
+        //return ($user->id === $userId || Role::isAdmin($user))
+        //    ? Response::allow()
+        //    : Response::deny('You do not have permission to view other people\'s chats.');
     }
 
     /**
@@ -24,11 +25,8 @@ class ChatPolicy
      */
     public function view(User $user, Chat $chat): Response
     {
-        return (!!$chat->isPrivateChat
-            || ChatMember::query()
-                ->where('chat_id', '=', $chat->id)
-                ->where('user_id', '=', $user->id)
-                ->exists())
+        return (//!$chat->isPrivateChat ||
+            $chat->chatMembers()->where('user_id', $user->id)->exists())
             ? Response::allow()
             : Response::deny('You do not have permission to view this chat.');
     }
@@ -46,9 +44,8 @@ class ChatPolicy
      */
     public function update(User $user, Chat $chat): Response
     {
-        return (ChatMember::query()
-            ->where('chat_id', '=', $chat->id)
-            ->where('user_id', '=', $user->id)
+        return ($chat->chatMembers()
+            ->where('user_id', $user->id)
             ->exists())
             ? Response::allow()
             : Response::deny('You do not have permission to edit this chat.');
@@ -59,7 +56,17 @@ class ChatPolicy
      */
     public function delete(User $user, Chat $chat): Response
     {
-        //TODO: Сделать администратора
+        //if ($chat->chatMembers()->havingRaw('count(*) = ?', 1)
+        //    ->where('user_id', '=', $user->id)->exists()) {
+        if ($chat->chatMembers()->where('user_id', $user->id)->exists()) {
+            if ($chat->chatMembers()->count() > 1)
+            {
+                Response::deny('You cannot delete chat with more than one member.');
+            }
+
+            return Response::allow();
+        }
+
         return Response::deny('You do not have permission to delete this chat.');
     }
 
@@ -68,7 +75,9 @@ class ChatPolicy
      */
     public function restore(User $user, Chat $chat): Response
     {
-        return Response::deny('You do not have permission to restore this chat.');
+        return Role::isAdmin($user)
+            ? Response::allow()
+            : Response::deny('You do not have permission to restore this chat.');
     }
 
     /**

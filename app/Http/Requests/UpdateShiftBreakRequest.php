@@ -2,8 +2,10 @@
 
 namespace App\Http\Requests;
 
+use App\Models\ShiftBreak;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateShiftBreakRequest extends FormRequest
 {
@@ -12,7 +14,7 @@ class UpdateShiftBreakRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,7 +25,11 @@ class UpdateShiftBreakRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'shift_break_id' => 'required|exists:shift_breaks,id',
+            'end' => [
+                'required',
+                Rule::dateTime()->after(ShiftBreak::findOrFail($this->shift_break_id)->start)
+            ],
         ];
     }
 }

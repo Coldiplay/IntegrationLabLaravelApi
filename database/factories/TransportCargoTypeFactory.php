@@ -19,22 +19,34 @@ class TransportCargoTypeFactory extends Factory
      */
     public function definition(): array
     {
-        $cargoTypeIds = [];
+        $cargoTypes = CargoType::all()->pluck('id')->toArray();
+        $vehicles = Vehicle::all();
         $vehicleId = null;
-        //TODO: Всё ещё иногда падает, хз как нормально сделать
-        foreach (fake()->shuffleArray(Vehicle::pluck('id')->toArray()) as $vehicleIdd) {
-            $cargoTypeIds = array_diff(CargoType::pluck('id')->toArray(),
-                TransportCargoType::where('vehicle_id', $vehicleIdd)
-                    ->pluck('cargo_type_id')->toArray());
-            if (!empty($cargoTypeIds)) {
-                $vehicleId = $vehicleIdd;
-                break;
+        $cargoTypeId = null;
+        foreach ($vehicles as $vehicle) {
+            $blockedIds = $vehicle->supportedCargoTypes()->pluck('id')->toArray();
+            foreach ($cargoTypes as $cargoType) {
+                if (!in_array($cargoType, $blockedIds)) {
+                    $vehicleId = $vehicle->id;
+                    $cargoTypeId = $cargoType;
+                    break;
+                }
             }
+
+            //$availableTypes = array_diff($cargoTypes, $vehicle->supportedCargoTypes()->pluck('id')->toArray());
+            //if (!empty($availableTypes)) {
+            //
+            //}
+        }
+
+        if (empty($vehicleId)) {
+            $vehicleId = Vehicle::factory(1)->create()->first()->id;
+            $cargoTypeId = CargoType::factory(1)->create()->first()->id;
         }
 
         return [
             'vehicle_id' => $vehicleId,
-            'cargo_type_id' => $this->faker->randomElement($cargoTypeIds),
+            'cargo_type_id' => $cargoTypeId
         ];
     }
 }
