@@ -14,6 +14,24 @@ class IncidentCollection extends ResourceCollection
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return $this->collection->map(function ($incident) {
+            return [
+                'id' => $incident->id,
+                'status' => $incident->status,
+                'incident_date' => $incident->incident_date,
+
+                'relationships' => [
+                    'driver' => [
+                        'id' => $incident->driver->user_id,
+                        'first_name' => $incident->driver->user->first_name,
+                        'last_name' => $incident->driver->user->last_name,
+                        'patronymic' => $incident->driver->user->patronymic,
+                    ],
+                    'shipping' => [
+                        'id' => $incident->shipping_id, //TODO: Надо ещё что-то или пойдёт?
+                    ]
+                ]
+            ];
+        });
     }
 }

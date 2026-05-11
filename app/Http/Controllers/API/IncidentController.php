@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Enums\Role;
 use App\Http\Controllers\Controller;
 use App\Http\Library\ApiHelpers;
 use App\Http\Requests\StoreIncidentRequest;
@@ -10,6 +11,7 @@ use App\Http\Resources\IncidentCollection;
 use App\Http\Resources\IncidentResource;
 use App\Models\Incident;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class IncidentController extends Controller
 {
@@ -17,10 +19,14 @@ class IncidentController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index($driverId) : JsonResponse
+    public function index(Request $request) : JsonResponse
     {
         $this->authorize('viewAny', Incident::class);
-        $incidents = Incident::query()->where('driver_id', $driverId)->get();
+        $user = $request->user();
+        if (Role::isLogistician($user) || Role::isAdmin($user))
+            $incidents = Incident::all();
+        else
+            $incidents = Incident::query()->where('driver_id', $user->id)->get();
         return $this->onSuccess(new IncidentCollection($incidents), 'Incidents retrieved successfully.');
     }
 

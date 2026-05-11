@@ -2,11 +2,13 @@
 
 namespace App\Http\Resources;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class UserResource extends JsonResource
+class ChatMemberResource extends JsonResource
 {
+    public $resource = User::class;
     /**
      * Transform the resource into an array.
      *
@@ -20,10 +22,7 @@ class UserResource extends JsonResource
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
             'patronymic' => $this->patronymic,
-            'role' => $this->role,
-            'phone' => $this->phone,
-            'email' => $this->email,
-            'hire_date' => $this->hire_date
+            'role' => $this->role
         ];
     }
 }

@@ -12,8 +12,8 @@ use App\Http\Requests\UpdateChatRequest;
 use App\Http\Requests\UpdateMessageRequest;
 use App\Http\Resources\ChatCollection;
 use App\Http\Resources\ChatResource;
+use App\Http\Resources\MessageCollection;
 use App\Http\Resources\MessageResource;
-use App\Http\Resources\MessagesCollection;
 use App\Http\Resources\UserCollection;
 use App\Models\Chat;
 use App\Models\ChatMember;
@@ -109,7 +109,7 @@ class ChatController extends Controller
             ->where('user_id', $request->user()->id)
             ->exists()) {
             $messages = Message::where('chat_id', $chat->id)->get();
-            return $this->onSuccess(new MessagesCollection($messages),
+            return $this->onSuccess(new MessageCollection($messages),
                 'Messages retrieved successfully.');
         }
 

@@ -13,7 +13,7 @@ class Message extends Model
     use HasFactory, SoftDeletes;
     protected $guarded = [];
 
-    public function user() : BelongsTo
+    public function sender() : BelongsTo
     {
         return $this->belongsTo(User::class);
     }

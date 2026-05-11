@@ -20,12 +20,8 @@ class ChatResource extends JsonResource
             'is_private_chat' => $this->is_private_chat,
             'relationships' =>
             [
-                'messages' => $this->whenLoaded('messages', function () {
-                    return new MessagesCollection($this->messages);
-                }),
-                'members' => $this->whenLoaded('members', function () {
-                    return new ChatMembersCollection($this->chatMembers);
-                })
+                'messages' => MessageResource::collection($this->messages),
+                'members' => ChatMemberResource::collection($this->chatMembers)
             ]
         ];
     }

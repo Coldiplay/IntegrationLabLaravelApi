@@ -22,8 +22,7 @@ class ChatCollection extends ResourceCollection
 
                 'relationships' =>
                 [
-                    //TODO: Сделать ChatMembersCollection
-                    'members' => 0//new ChatMembersCollection($chat->members),
+                    'members' => new ChatMembersCollection($chat->chatMembers),
                 ],
             ];
         })->toArray();

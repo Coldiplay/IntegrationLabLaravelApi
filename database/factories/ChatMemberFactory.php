@@ -20,7 +20,6 @@ class ChatMemberFactory extends Factory
     public function definition(): array
     {
         $chat = Chat::all()->random();
-        //$chatIds = Chat::pluck('id')->toArray();
         $existingMembers = $chat->chatMembers()->pluck('id')->toArray();
         $userIds = array_diff(User::pluck('id')->toArray(), $existingMembers);
         if(empty($userIds))
