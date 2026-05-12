@@ -11,6 +11,8 @@ class Incident extends Model
     /** @use HasFactory<\Database\Factories\IncidentFactory> */
     use HasFactory;
 
+    protected $guarded = [];
+
     public function driver() : BelongsTo
     {
         return $this->belongsTo(User::class, 'driver_id');

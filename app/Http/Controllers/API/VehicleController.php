@@ -26,7 +26,7 @@ class VehicleController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreVehicleRequest $request)
+    public function store(StoreVehicleRequest $request): JsonResponse
     {
         $this->authorize('create', Vehicle::class);
         $vehicle = Vehicle::create($request->validated());
@@ -36,7 +36,7 @@ class VehicleController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Vehicle $vehicle)
+    public function show(Vehicle $vehicle): JsonResponse
     {
         $this->authorize('view', $vehicle);
         return $this->onSuccess(new VehicleResource($vehicle), 'Vehicle retrieved successfully.');
@@ -45,17 +45,19 @@ class VehicleController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateVehicleRequest $request, Vehicle $vehicle)
+    public function update(UpdateVehicleRequest $request, Vehicle $vehicle): JsonResponse
     {
         $this->authorize('update', $vehicle);
-        $vehicle->update($request->validated());
+        $data = $request->validated();
+        //return $this->onSuccess(['data' => $data, 'request' => $request->all()], 'Vehicle updated successfully.');
+        $vehicle->update($data);
         return $this->onSuccess(new VehicleResource($vehicle), 'Vehicle updated successfully.');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Vehicle $vehicle)
+    public function destroy(Vehicle $vehicle): JsonResponse
     {
         $this->authorize('delete', $vehicle);
         $vehicle->delete();

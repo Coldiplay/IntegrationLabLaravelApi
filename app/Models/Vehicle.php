@@ -18,6 +18,8 @@ class Vehicle extends Model
         'body_size' => DimensionsCast::class . ':body_size',
     ];
 
+    protected $guarded = [];
+
 
     public function supportedCargoTypes() : HasManyThrough
     {

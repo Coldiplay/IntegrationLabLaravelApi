@@ -31,9 +31,16 @@ class StoreDriversShiftRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            'start' => ['required', Rule::date()->afterOrEqual(today()->addHours(-2))],
-            'end' => 'sometimes|date|after:start',
-        ];
+        $user = $this->user();
+        return Role::isLogistician($this->user())
+        || Role::isAdmin($user)
+            ? [
+                'designated_driver_id' => 'required|exists:drivers,user_id',
+                'start' => ['required', Rule::date()->afterOrEqual(today()->addHours(-2))],
+                'end' => 'sometimes|date|after:start',
+                ]
+            : [
+                'start' => ['required', Rule::date()->afterOrEqual(today()->addHours(-2))]
+            ];
     }
 }

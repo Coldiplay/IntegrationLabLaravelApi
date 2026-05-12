@@ -11,7 +11,7 @@ use App\Http\Resources\ShippingCollection;
 use App\Http\Resources\ShippingResource;
 use App\Models\Shipping;
 use Illuminate\Http\JsonResponse;
-use Request;
+use Illuminate\Http\Request;
 
 class ShippingController extends Controller
 {
@@ -24,9 +24,12 @@ class ShippingController extends Controller
         $this->authorize('viewAny', [Shipping::class]);
         $user = $request->user();
         if (Role::isLogistician($user) || Role::isAdmin($user)) {
-            return $this->onSuccess(new ShippingCollection(Shipping::all()));
+            $shippings = Shipping::all();
         }
-        $shippings = Shipping::query()->where('driver_id', $user->id)->get();
+        else{
+            $shippings = Shipping::query()->where('driver_id', $user->id)->get();
+        }
+
         return $this->onSuccess(new ShippingCollection($shippings), 'Shippings retrieved successfully.');
     }
 
@@ -69,18 +72,4 @@ class ShippingController extends Controller
         return $this->onSuccess(null, 'Shipping deleted successfully.');
     }
 
-    public function confirmStart(Shipping $shipping) : JsonResponse
-    {
-        $this->authorize('change-start-end-state', [Shipping::class, $shipping]);
-        $shipping->update(['shipped_date' => now()]);
-        return $this->onSuccess(new ShippingResource($shipping), 'Shipping updated successfully.');
-    }
-
-    public function confirmEnd(Shipping $shipping) : JsonResponse
-    {
-        $this->authorize('change-start-end-state', [Shipping::class, $shipping]);
-        //TODO: Какая-то хрень, похже посмотреть
-        $shipping->update(['delivery_date' => null]);
-        return $this->onSuccess(new ShippingResource($shipping), 'Shipping updated successfully.');
-    }
 }

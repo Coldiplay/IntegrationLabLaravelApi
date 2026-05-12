@@ -22,16 +22,16 @@ class IncidentCollection extends ResourceCollection
 
                 'relationships' => [
                     'driver' => [
-                        'id' => $incident->driver->user_id,
-                        'first_name' => $incident->driver->user->first_name,
-                        'last_name' => $incident->driver->user->last_name,
-                        'patronymic' => $incident->driver->user->patronymic,
+                        'id' => $incident->driver->id,
+                        'first_name' => $incident->driver->first_name,
+                        'last_name' => $incident->driver->last_name,
+                        'patronymic' => $incident->driver->patronymic,
                     ],
                     'shipping' => [
                         'id' => $incident->shipping_id, //TODO: Надо ещё что-то или пойдёт?
                     ]
                 ]
             ];
-        });
+        })->toArray();
     }
 }

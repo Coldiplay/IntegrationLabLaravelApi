@@ -25,8 +25,9 @@ class UpdateVehicleRequest extends FormRequest
      */
     public function rules(): array
     {
+        //TODO: При $request->validated() возвращает пустой массив
         return [
-            'vehicle_number_plate' => 'sometimes|string|unique:vehicles,vehicle_number_plate',
+            'vehicle_number_plate' => 'sometimes|string|max:15|unique:vehicles,vehicle_number_plate',
             'brand' => 'sometimes|string|max:20',
             'model' => 'sometimes|string|max:40',
             'needed_rights' => ['sometimes', 'integer', 'min:0', Rule::in(Rights::getValues())],
@@ -34,14 +35,14 @@ class UpdateVehicleRequest extends FormRequest
             'body_type' => ['sometimes', 'string', Rule::in(BodyType::getKeys())],
 
             'vehicle_size' => ['sometimes', 'json'],
-            'vehicle_size.length' => ['required_if:dimensions', 'numeric', 'min:0'],
-            'vehicle_size.width' => ['required_if:dimensions', 'numeric', 'min:0'],
-            'vehicle_size.height' => ['required_if:dimensions', 'numeric', 'min:0'],
+            'vehicle_size.length' => ['required_with:vehicle_size', 'numeric', 'min:0'],
+            'vehicle_size.width' => ['required_with:vehicle_size', 'numeric', 'min:0'],
+            'vehicle_size.height' => ['required_with:vehicle_size', 'numeric', 'min:0'],
 
             'body_size' => ['sometimes', 'json'],
-            'body_size.length' => ['required_if:body_size', 'numeric', 'min:0'],
-            'body_size.width' => ['required_if:body_size', 'numeric', 'min:0'],
-            'body_size.height' => ['required_if:body_size', 'numeric', 'min:0'],
+            'body_size.length' => ['required_with:body_size', 'numeric', 'min:0'],
+            'body_size.width' => ['required_with:body_size', 'numeric', 'min:0'],
+            'body_size.height' => ['required_with:body_size', 'numeric', 'min:0'],
 
             'max_cargo_volume' => ['sometimes', 'numeric', 'min:0'],
             'vehicle_weight' => ['sometimes', 'numeric', 'min:0'],

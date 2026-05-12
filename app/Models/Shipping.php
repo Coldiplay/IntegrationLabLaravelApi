@@ -12,6 +12,8 @@ class Shipping extends Model
     /** @use HasFactory<\Database\Factories\ShippingFactory> */
     use HasFactory;
 
+    protected $guarded = [];
+
     public function designatedDriver() : BelongsTo
     {
         return $this->belongsTo(Driver::class, 'designated_driver_id');

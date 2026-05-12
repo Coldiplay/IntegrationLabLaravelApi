@@ -24,7 +24,7 @@ class UpdateChatRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255|min:3',
-            'isPrivateChat' => 'sometimes|boolean',
+            'is_private_chat' => 'sometimes|boolean',
         ];
     }
 }

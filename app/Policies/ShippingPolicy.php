@@ -55,15 +55,15 @@ class ShippingPolicy
             : Response::deny('You are not authorized to update shippings.');
     }
 
-    public function changeStartEndState(User $user, Shipping $shipping): Response
-    {
-        return Role::isDriver($user)
-            && $shipping->designated_driver_id === $user->id
-            || Role::isLogistician($user)
-            || Role::isAdmin($user)
-            ? Response::allow()
-            : Response::deny('You are not authorized to change this shipping\' state.');
-    }
+//    public function changeStartEndState(User $user, Shipping $shipping): Response
+//    {
+//        return Role::isDriver($user)
+//            && $shipping->designated_driver_id === $user->id
+//            || Role::isLogistician($user)
+//            || Role::isAdmin($user)
+//            ? Response::allow()
+//            : Response::deny('You are not authorized to change this shipping\' state.');
+//    }
 
     /**
      * Determine whether the user can delete the model.

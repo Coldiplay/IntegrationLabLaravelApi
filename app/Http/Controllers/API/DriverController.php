@@ -9,6 +9,7 @@ use App\Http\Requests\UpdateDriverRequest;
 use App\Http\Resources\DriverCollection;
 use App\Http\Resources\DriverResource;
 use App\Models\Driver;
+use Illuminate\Http\JsonResponse;
 
 class DriverController extends Controller
 {
@@ -16,7 +17,7 @@ class DriverController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index() : JsonResponse
     {
         $this->authorize('viewAny', Driver::class);
         return $this->onSuccess(new DriverCollection(Driver::all()), 'Drivers retrieved successfully.');
@@ -25,7 +26,7 @@ class DriverController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreDriverRequest $request)
+    public function store(StoreDriverRequest $request) : JsonResponse
     {
         $this->authorize('create', Driver::class);
         $driver = Driver::create($request->validated());
@@ -35,7 +36,7 @@ class DriverController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Driver $driver)
+    public function show(Driver $driver) : JsonResponse
     {
         $this->authorize('view', $driver);
         return $this->onSuccess(new DriverResource($driver), 'Driver retrieved successfully.');
@@ -44,7 +45,7 @@ class DriverController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateDriverRequest $request, Driver $driver)
+    public function update(UpdateDriverRequest $request, Driver $driver) : JsonResponse
     {
         $this->authorize('update', $driver);
         $driver->update($request->validated());
@@ -54,7 +55,7 @@ class DriverController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Driver $driver)
+    public function destroy(Driver $driver) : JsonResponse
     {
         $this->authorize('delete', $driver);
         $driver->delete();

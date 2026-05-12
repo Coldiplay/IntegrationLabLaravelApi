@@ -10,6 +10,7 @@ use App\Http\Requests\UpdateShiftBreakRequest;
 use App\Http\Resources\ShiftBreakCollection;
 use App\Http\Resources\ShiftBreakResource;
 use App\Models\ShiftBreak;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use PhpParser\Builder;
 
@@ -19,7 +20,7 @@ class ShiftBreakController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index(Request $request) : JsonResponse
     {
         $this->authorize('viewAny', ShiftBreak::class);
 
@@ -35,7 +36,7 @@ class ShiftBreakController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreShiftBreakRequest $request)
+    public function store(StoreShiftBreakRequest $request) : JsonResponse
     {
         $this->authorize('create', ShiftBreak::class);
         $shiftBreak = ShiftBreak::create($request->validated());
@@ -45,7 +46,7 @@ class ShiftBreakController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(ShiftBreak $shiftBreak)
+    public function show(ShiftBreak $shiftBreak) : JsonResponse
     {
         $this->authorize('view', $shiftBreak);
         return $this->onSuccess(new ShiftBreakResource($shiftBreak), 'Shift break retrieved successfully.');
@@ -54,7 +55,7 @@ class ShiftBreakController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateShiftBreakRequest $request, ShiftBreak $shiftBreak)
+    public function update(UpdateShiftBreakRequest $request, ShiftBreak $shiftBreak) : JsonResponse
     {
         $this->authorize('update', $shiftBreak);
         $shiftBreak->update($request->validated());
@@ -64,7 +65,7 @@ class ShiftBreakController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(ShiftBreak $shiftBreak)
+    public function destroy(ShiftBreak $shiftBreak) : JsonResponse
     {
         $this->authorize('delete', $shiftBreak);
         $shiftBreak->delete();

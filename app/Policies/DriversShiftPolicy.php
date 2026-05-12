@@ -4,6 +4,7 @@ namespace App\Policies;
 
 use App\Enums\Role;
 use App\Models\DriversShift;
+use App\Models\Shipping;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
@@ -36,9 +37,9 @@ class DriversShiftPolicy
     /**
      * Determine whether the user can create models.
      */
-    public function create(User $user): Response
+    public function create(User $user, Shipping $shipping): Response
     {
-        return $user->driver()->exists()
+        return ($user->driver()->exists()) //TODO: Добавить проверку на статус shipping
         || Role::isLogistician($user)
         || Role::isAdmin($user)
             ? Response::allow()
