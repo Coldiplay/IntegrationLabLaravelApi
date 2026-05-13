@@ -9,6 +9,7 @@ use App\Http\Controllers\API\MessageController;
 use App\Http\Controllers\API\ShippingController;
 use App\Http\Controllers\API\ShippingOrderController;
 use App\Http\Controllers\API\VehicleController;
+use App\Http\Controllers\Webhook\SmsStatusWebhookController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,6 +17,9 @@ use Illuminate\Support\Facades\Route;
 | API Routes
 |--------------------------------------------------------------------------
 */
+
+Route::post('/webhooks/sms/status', [SmsStatusWebhookController::class, 'handle'])
+    ->name('webhooks.sms.status');
 
 // Swagger Documentation - редирект на Swagger UI
 Route::get('/docs', function () {
