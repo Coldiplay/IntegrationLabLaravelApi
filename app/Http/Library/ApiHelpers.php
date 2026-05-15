@@ -8,17 +8,11 @@ trait ApiHelpers
 {
     protected function onSuccess($data, string $message = '', int $code = 200): JsonResponse
     {
-        $type = gettype($data);
-        $response = [
-            'status' => $code,
-            'message' => $message,
-            'data' => $data,
-            'phpType' => $type,
-        ];
+        $container_type = gettype($data);
 
         $typeName = 'undefined';
 
-        if ($type === 'object') {
+        if ($container_type === 'object') {
             $typeName = get_class($data);
 
             if (str_contains($typeName, '\\')) {
@@ -27,14 +21,20 @@ trait ApiHelpers
 
             if (str_contains($typeName, 'Resource')) {
                 $typeName = substr($typeName, 0, strrpos($typeName, 'Resource'));
-            }
-
-            if (str_contains($typeName, 'Collection')) {
+            } else if (str_contains($typeName, 'Collection')) {
                 $typeName = substr($typeName, 0, strrpos($typeName, 'Collection'));
+                $container_type = 'array';
             }
         }
 
-        $response['type'] = $typeName;
+        $response = [
+            'status' => $code,
+            'message' => $message,
+            'data' => $data,
+            'container_type' => $container_type,
+        ];
+
+        $response['class_type'] = $typeName;
 
         return response()->json($response, $code);
     }
