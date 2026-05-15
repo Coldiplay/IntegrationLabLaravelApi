@@ -22,10 +22,14 @@ class IncidentCollection extends ResourceCollection
 
                 'relationships' => [
                     'driver' => [
-                        'id' => $incident->driver->id,
-                        'first_name' => $incident->driver->first_name,
-                        'last_name' => $incident->driver->last_name,
-                        'patronymic' => $incident->driver->patronymic,
+                        'user_id' => $incident->driver->id,
+                        'user' =>
+                        [
+                            'id' => $incident->driver->id,
+                            'first_name' => $incident->driver->first_name,
+                            'last_name' => $incident->driver->last_name,
+                            'patronymic' => $incident->driver->patronymic,
+                        ],
                     ],
                     'shipping' => [
                         'id' => $incident->shipping_id, //TODO: Надо ещё что-то или пойдёт?

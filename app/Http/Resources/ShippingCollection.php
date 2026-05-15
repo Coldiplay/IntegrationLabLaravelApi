@@ -32,16 +32,19 @@ class ShippingCollection extends ResourceCollection
 
                 'relationships' =>
                 [
-                    'driver' => $shipping->when(isset($shipping->designatedDriver), function () use ($shipping)
+                    'designated_driver' => $shipping->when(isset($shipping->designatedDriver), function () use ($shipping)
                     {
                         $driver = $shipping->designatedDriver;
                         return [
-                            'id' => $driver->user_id,
-                            'first_name' => $driver->user->first_name,
-                            'last_name' => $driver->user->last_name,
-                            'patronymic' => $driver->user->patronymic,
-                            'phone' => $driver->user->phone,
+                            'user_id' => $driver->user_id,
                             'rights' => $driver->rights,
+                            'user' => [
+                                'id' => $driver->user_id,
+                                'first_name' => $driver->user->first_name,
+                                'last_name' => $driver->user->last_name,
+                                'patronymic' => $driver->user->patronymic,
+                                'phone' => $driver->user->phone,
+                            ]
                         ];
                     }),
 

@@ -2,27 +2,29 @@
 
 namespace App\Http\Library;
 
+use Exception;
 use Illuminate\Http\JsonResponse;
 
 trait ApiHelpers
 {
-    protected function onSuccess($data, string $message = '', int $code = 200): JsonResponse
+    protected function onSuccess($data, string $message = '', int $code = 200, ?string $className = null, ?string $container_type = null, bool $checkContainerType = true)
+    : JsonResponse
     {
-        $container_type = gettype($data);
+        if (empty($container_type)) $container_type = gettype($data);
 
-        $typeName = 'undefined';
+        if (empty($className)) $className = 'undefined';
 
-        if ($container_type === 'object') {
-            $typeName = get_class($data);
+        if ($checkContainerType && $container_type === 'object') {
+            $className = get_class($data);
 
-            if (str_contains($typeName, '\\')) {
-                $typeName = substr($typeName, strrpos($typeName, '\\') + 1);
+            if (str_contains($className, '\\')) {
+                $className = substr($className, strrpos($className, '\\') + 1);
             }
 
-            if (str_contains($typeName, 'Resource')) {
-                $typeName = substr($typeName, 0, strrpos($typeName, 'Resource'));
-            } else if (str_contains($typeName, 'Collection')) {
-                $typeName = substr($typeName, 0, strrpos($typeName, 'Collection'));
+            if (str_contains($className, 'Resource')) {
+                $className = substr($className, 0, strrpos($className, 'Resource'));
+            } else if (str_contains($className, 'Collection')) {
+                $className = substr($className, 0, strrpos($className, 'Collection'));
                 $container_type = 'array';
             }
         }
@@ -34,7 +36,7 @@ trait ApiHelpers
             'container_type' => $container_type,
         ];
 
-        $response['class_type'] = $typeName;
+        $response['class_type'] = $className;
 
         return response()->json($response, $code);
     }

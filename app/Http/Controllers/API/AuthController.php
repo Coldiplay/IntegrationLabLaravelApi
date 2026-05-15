@@ -53,7 +53,8 @@ class AuthController extends Controller
         return $this->onSuccess([
             'user' => new UserResource($user),
             'token' => $token,
-        ], 'User logged in successfully');
+        ], 'User logged in successfully',
+            className: 'UserAuth', container_type: 'object', checkContainerType: false);
     }
 
     /**
