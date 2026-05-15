@@ -4,6 +4,9 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -14,7 +17,7 @@ class User extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable;
 
     /**
-     * The attributes that are mass assignable.
+     * The attributes that are mass assignable.s
      *
      * @var list<string>
      */
@@ -46,4 +49,21 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function messages() : HasMany
+    {
+        return $this->hasMany(Message::class);
+    }
+
+    public function driver() : ?HasOne
+    {
+        return $this->hasOne(Driver::class);
+    }
+
+    public function chats() : HasManyThrough
+    {
+        return $this->hasManyThrough(Chat::class, ChatMember::class);
+    }
+
+
 }

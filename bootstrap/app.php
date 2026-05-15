@@ -1,8 +1,12 @@
 <?php
 
+use App\Http\Middleware\ForceJsonResponse;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Http\Request;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -12,8 +16,29 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        //
+        $middleware->appendToGroup('api', [
+           ForceJsonResponse::class
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
-        //
+        $exceptions->render(function (NotFoundHttpException $e, Request $request) {
+           if ($request->is('api/*') || $request->expectsJson())
+           {
+               return response()->json([
+                   'status' => 404,
+                   'message' => 'Content not found'
+               ], 404);
+           }
+            throw $e;
+        });
+
+        $exceptions->render(function (AccessDeniedHttpException $e, Request $request) {
+           if ($request->is('api/*') || $request->expectsJson())
+           {
+               return response()->json([
+                   'status' => 403,
+                   'message' => $e->getMessage()
+               ]);
+           }
+        });
     })->create();
