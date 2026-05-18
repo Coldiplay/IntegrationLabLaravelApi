@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Enums\Role;
 use App\Http\Controllers\Controller;
 use App\Http\Library\ApiHelpers;
 use App\Http\Requests\StoreChatMemberRequest;
@@ -16,15 +15,12 @@ use App\Http\Resources\ChatMembersCollection;
 use App\Http\Resources\ChatResource;
 use App\Http\Resources\MessageCollection;
 use App\Http\Resources\MessageResource;
-use App\Http\Resources\UserCollection;
-use App\Http\Resources\UserResource;
 use App\Models\Chat;
 use App\Models\ChatMember;
 use App\Models\Message;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class ChatController extends Controller
 {
@@ -147,7 +143,9 @@ class ChatController extends Controller
     {
         $this->authorize('view', [ChatMember::class, $chat]);
         return $this->onSuccess(
-            new ChatMembersCollection(($chat->chatMembers()->get())), 'Users retrieved successfully.'
+            new ChatMembersCollection(($chat->chatMembers()->get())),
+            'Users retrieved successfully.',
+            className: 'User'
         );
     }
     public function addMember(StoreChatMemberRequest $request, Chat $chat) : JsonResponse
@@ -164,7 +162,10 @@ class ChatController extends Controller
             $newChatMember = ChatMember::create(['user_id' => $user_id, 'chat_id' => $chat->id])->user;
         }
 
-        return $this->onSuccess(new ChatMemberResource($newChatMember), 'Chat member added successfully.', 201);
+        return $this->onSuccess(new ChatMemberResource($newChatMember),
+            'Chat member added successfully.',
+            201,
+            className: 'User');
     }
     public function removeMember(Chat $chat, User $user) : JsonResponse
     {

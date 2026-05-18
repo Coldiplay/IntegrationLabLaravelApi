@@ -2,7 +2,6 @@
 
 namespace App\Http\Library;
 
-use Exception;
 use Illuminate\Http\JsonResponse;
 
 trait ApiHelpers
