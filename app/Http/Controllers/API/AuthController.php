@@ -74,4 +74,9 @@ class AuthController extends Controller
     {
         return $this->onSuccess(new UserResource($request->user()), 'User retrieved successfully');
     }
+
+    public function check() : JsonResponse
+    {
+        return $this->onSuccess(null, 'You are logged in');
+    }
 }

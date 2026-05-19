@@ -145,7 +145,7 @@ class ChatController extends Controller
         return $this->onSuccess(
             new ChatMembersCollection(($chat->chatMembers()->get())),
             'Users retrieved successfully.',
-            className: 'User'
+            className: 'User', container_type: 'array', checkContainerType: false
         );
     }
     public function addMember(StoreChatMemberRequest $request, Chat $chat) : JsonResponse

@@ -33,6 +33,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::post('/logout', [AuthController::class, 'logout'])->name('api.logout');
     Route::get('/user', [AuthController::class, 'user'])->name('api.user');
+    Route::get('/Auth/Check', [AuthController::class, 'check'])->name('api.Auth.Check');
+
 
     Route::group(['prefix' => 'chat'], function () {
         Route::get('/', [ChatController::class, 'index'])
