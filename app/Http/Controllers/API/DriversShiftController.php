@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Enums\Role;
 use App\Http\Controllers\Controller;
 use App\Http\Library\ApiHelpers;
+use App\Http\Requests\StoreDriversShiftRequest;
 use App\Http\Requests\UpdateDriversShiftRequest;
-use App\Http\Resources\ShippingResource;
+use App\Http\Resources\DriversShiftResource;
 use App\Models\DriversShift;
-use App\Models\Shipping;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class DriversShiftController extends Controller
@@ -17,19 +17,28 @@ class DriversShiftController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $this->authorize('view-any', DriversShift::class);
+        $user = $request->user();
+        if (Role::isAdmin($user) || Role::isLogistician($user)) {
+            $shifts = DriversShift::all();
+        }
+        elseif (Role::isDriver($user)) {
+            $shifts = DriversShift::where('driver_id', $user->id)->get();
+        }
+
+        return $this->onSuccess($shifts, "Shifts retrieved successfully.");
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(UpdateDriversShiftRequest $request, Shipping $shipping)
+    public function store(StoreDriversShiftRequest $request)
     {
-        $this->authorize('create', [DriversShift::class, $shipping]);
-        $shipping->update(['shipped_date' => now()]);
-        return $this->onSuccess(new ShippingResource($shipping), 'Shipping updated successfully.');
+        $this->authorize('create', [DriversShift::class]);
+        $shift = DriversShift::create($request->validated());
+        return $this->onSuccess(new DriversShiftResource($shift), 'Shift updated successfully.');
     }
 
     /**
@@ -37,19 +46,24 @@ class DriversShiftController extends Controller
      */
     public function show(DriversShift $driversShift)
     {
-
+        $this->authorize('view', $driversShift);
+        return $this->onSuccess(new DriversShiftResource($driversShift), 'Shift retrieved successfully.');
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(DriversShift $driversShift)
+    public function update(UpdateDriversShiftRequest $request, DriversShift $driversShift)
     {
         $this->authorize('update', [DriversShift::class, $driversShift]);
-        //TODO: Какая-то хрень, похже посмотреть
+        $data = $request->validated();
+        if (Role::isDriver($request->user()))
+        {
+            $data['end'] = now();
+        }
+        $driversShift->update($request->validated());
 
-        //$shipping->update(['delivery_date' => null]);
-        //return $this->onSuccess(new ShippingResource($shipping), 'Shipping updated successfully.');
+        return $this->onSuccess($driversShift, 'Shift updated successfully.');
     }
 
     /**
@@ -57,6 +71,8 @@ class DriversShiftController extends Controller
      */
     public function destroy(DriversShift $driversShift)
     {
-        //
+        $this->authorize('delete', $driversShift);
+        $driversShift->delete();
+        return $this->onSuccess(null, 'Shift deleted successfully.');
     }
 }

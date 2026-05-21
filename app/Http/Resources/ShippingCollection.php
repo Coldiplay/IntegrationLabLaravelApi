@@ -29,9 +29,11 @@ class ShippingCollection extends ResourceCollection
                 ]),
                 'shipping_status' => $shipping->shipping_status,
 
+                'cargo_count' => $shipping->cargos->count(),
+                'cargo_weight' => $shipping->cargos->sum('weight'),
 
-                'relationships' =>
-                [
+
+                'relationships' => [
                     'designated_driver' => $shipping->when(isset($shipping->designatedDriver), function () use ($shipping)
                     {
                         $driver = $shipping->designatedDriver;

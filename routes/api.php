@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\CargoController;
 use App\Http\Controllers\API\ChatController;
 use App\Http\Controllers\API\DriverController;
 use App\Http\Controllers\API\DriversShiftController;
@@ -172,6 +173,19 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::delete('/{driver}', [DriverController::class, 'destroy'])
             ->name('api.driver.destroy');
         //
+    });
+
+    Route::group(['prefix' => 'cargo'], function () {
+        Route::get('/', [CargoController::class, 'index'])
+            ->name('api.cargo.index');
+        Route::post('/', [CargoController::class, 'store'])
+            ->name('api.cargo.store');
+        Route::get('/{cargo}', [CargoController::class, 'show'])
+            ->name('api.cargo.show');
+        Route::put('/{cargo}', [CargoController::class, 'update'])
+            ->name('api.cargo.update');
+        Route::delete('/{cargo}', [CargoController::class, 'destroy'])
+            ->name('api.cargo.destroy');
     });
 });
 

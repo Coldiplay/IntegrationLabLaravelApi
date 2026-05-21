@@ -38,8 +38,8 @@ class ShippingResource extends JsonResource
                             'rights' => $driver->rights,
                         ];
                     }),
-
                     'vehicle' => new VehicleResource($this->vehicle),
+                    'cargos' => new CargoCollection($this->cargos)
                 ]
 
         ];
