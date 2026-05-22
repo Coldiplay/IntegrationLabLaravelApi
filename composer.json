@@ -12,6 +12,7 @@
         "laravel/sanctum": "^4.3",
         "laravel/tinker": "^2.10.1",
         "moonshine/moonshine": "^4.10",
+        "vladimir-yuldashev/laravel-queue-rabbitmq": "^14.5",
         "wadakatu/laravel-spectrum": "^1.1"
     },
     "require-dev": {
