@@ -11,10 +11,8 @@ class MessageObserver
      * Handle the Message "created" event.
      */
     public function created(Message $message): void
-
     {
-        $changeType = $this->detectChangeType($message);
-        dispatch(new MessageUpdated($message->id, $changeType))
+        dispatch(new MessageUpdated($message->id))
         ->onConnection('rabbitmq')
         ->onQueue('messages-updates-queue');
     }
@@ -24,8 +22,7 @@ class MessageObserver
      */
     public function updated(Message $message): void
     {
-        $changeType = $this->detectChangeType($message);
-        dispatch(new MessageUpdated($message->id, $changeType))
+        dispatch(new MessageUpdated($message->id))
             ->onConnection('rabbitmq')
             ->onQueue('messages-updates-queue');
     }

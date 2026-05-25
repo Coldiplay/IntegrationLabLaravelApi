@@ -15,7 +15,7 @@ class MessageUpdated implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct(public int $message_id, public string $changeType)
+    public function __construct(public int $message_id)
     {
         //
     }

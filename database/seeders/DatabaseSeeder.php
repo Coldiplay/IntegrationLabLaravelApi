@@ -17,10 +17,12 @@ use App\Models\ShippingOrder;
 use App\Models\TransportCargoType;
 use App\Models\User;
 use App\Models\Vehicle;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
+    use WithoutModelEvents;
     /**
      * Seed the application's database.
      */

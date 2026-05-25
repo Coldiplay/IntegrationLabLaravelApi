@@ -1,7 +1,6 @@
 <?php
 
 use App\Enums\ShippingStatus;
-use App\Models\Driver;
 use App\Models\Vehicle;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -24,7 +23,7 @@ return new class extends Migration
             $table->date('shipping_date');
             $table->dateTime('shipped_date')->nullable();
             $table->foreignIdFor(Vehicle::class);
-            $table->foreignIdFor(Driver::class, 'designated_driver_id');
+            $table->foreignUuid('designated_driver_id');
             $table->timestamps();
         });
     }

@@ -1,7 +1,6 @@
 <?php
 
 use App\Enums\IncidentStatus;
-use App\Models\Driver;
 use App\Models\Shipping;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -18,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(Shipping::class)
                 ->constrained('shippings');
-            $table->foreignIdFor(Driver::class, 'driver_id')
+            $table->foreignUuid('driver_id')
                 ->constrained('drivers', 'user_id');
             $table->string('description', 500);
             $table->dateTime('incident_date');
