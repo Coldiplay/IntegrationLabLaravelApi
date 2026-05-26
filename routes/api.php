@@ -7,6 +7,7 @@ use App\Http\Controllers\API\DriverController;
 use App\Http\Controllers\API\DriversShiftController;
 use App\Http\Controllers\API\IncidentController;
 use App\Http\Controllers\API\MessageController;
+use App\Http\Controllers\API\ShiftBreakController;
 use App\Http\Controllers\API\ShippingController;
 use App\Http\Controllers\API\ShippingOrderController;
 use App\Http\Controllers\API\VehicleController;
@@ -51,12 +52,14 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::delete('/', [ChatController::class, 'destroy'])
                 ->name('api.chat.destroy');
 
-            Route::get('/members', [ChatController::class, 'getMembers'])
-                ->name('api.chat.members.index');
-            Route::post('/addMember', [ChatController::class, 'addMember'])
-                ->name('api.chat.members.store');
-            Route::delete('/removeMember/{user}', [ChatController::class, 'removeMember'])
-                ->name('api.chat.members.destroy');
+            Route::group(['prefix' => 'members'], function () {
+                Route::get('/', [ChatController::class, 'getMembers'])
+                    ->name('api.chat.members.index');
+                Route::post('/', [ChatController::class, 'addMember'])
+                    ->name('api.chat.members.store');
+                Route::delete('/{user}', [ChatController::class, 'removeMember'])
+                    ->name('api.chat.members.destroy');
+            });
 
 
             Route::group(['prefix' => 'messages'], function () {
@@ -187,8 +190,21 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::delete('/{cargo}', [CargoController::class, 'destroy'])
             ->name('api.cargo.destroy');
     });
+
+
+    Route::group(['prefix' => 'shift-break'], function () {
+       Route::get('/', [ShiftBreakController::class, 'index'])
+           ->name('api.shift_break.index');
+       Route::post('/', [ShiftBreakController::class, 'store'])
+           ->name('api.shift_break.store');
+
+       Route::group(['prefix' => '{shift_break}'], function () {
+          Route::get('/', [ShiftBreakController::class, 'show'])
+              ->name('api.shift_break.show');
+          Route::put('/', [ShiftBreakController::class, 'update'])
+              ->name('api.shift_break.update');
+          Route::delete('/', [ShiftBreakController::class, 'destroy'])
+              ->name('api.shift_break.destroy');
+       });
+    });
 });
-
-
-
-
