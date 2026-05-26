@@ -8,22 +8,23 @@ use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
-class ShippingUpdated implements ShouldQueue
+class ShiftUpdated implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     /**
      * Create a new job instance.
      */
-    public function __construct(
-        public int $shipping_id
-    ){}
+    public function __construct(public int $shift_id)
+    {
+        //
+    }
 
     /**
      * Execute the job.
      */
     public function handle(): void
     {
-
+        //
     }
 }

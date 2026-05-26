@@ -32,7 +32,9 @@ class MessageObserver
      */
     public function deleted(Message $message): void
     {
-        //
+        dispatch(new MessageUpdated($message->id))
+            ->onConnection('rabbitmq')
+            ->onQueue('messages-delete-queue');
     }
 
     /**
