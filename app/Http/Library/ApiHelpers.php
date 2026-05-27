@@ -13,8 +13,13 @@ trait ApiHelpers
 
         if (empty($className)) $className = 'undefined';
 
-        if ($checkContainerType && $container_type === 'object') {
-            $className = get_class($data);
+        if ($checkContainerType) {
+            if ($container_type == 'array') {
+                $className = get_class($data[0]);
+            }
+            else{
+                $className = get_class($data);
+            }
 
             if (str_contains($className, '\\')) {
                 $className = substr($className, strrpos($className, '\\') + 1);

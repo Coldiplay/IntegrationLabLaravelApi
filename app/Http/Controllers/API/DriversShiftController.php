@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Library\ApiHelpers;
 use App\Http\Requests\StoreDriversShiftRequest;
 use App\Http\Requests\UpdateDriversShiftRequest;
+use App\Http\Resources\DriversShiftCollection;
 use App\Http\Resources\DriversShiftResource;
 use App\Models\DriversShift;
 use Illuminate\Http\Request;
@@ -28,7 +29,7 @@ class DriversShiftController extends Controller
             $shifts = DriversShift::where('driver_id', $user->id)->get();
         }
 
-        return $this->onSuccess($shifts, "Shifts retrieved successfully.");
+        return $this->onSuccess(new DriversShiftCollection($shifts), "Shifts retrieved successfully.");
     }
 
     /**
@@ -63,7 +64,7 @@ class DriversShiftController extends Controller
         }
         $driversShift->update($request->validated());
 
-        return $this->onSuccess($driversShift, 'Shift updated successfully.');
+        return $this->onSuccess(new DriversShiftResource($driversShift), 'Shift updated successfully.');
     }
 
     /**

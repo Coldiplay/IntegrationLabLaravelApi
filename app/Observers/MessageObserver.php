@@ -4,6 +4,7 @@ namespace App\Observers;
 
 use App\Jobs\MessageUpdated;
 use App\Models\Message;
+use Str;
 
 class MessageObserver
 {
@@ -22,7 +23,13 @@ class MessageObserver
      */
     public function updated(Message $message): void
     {
-        dispatch(new MessageUpdated($message->id))
+        if (!$this->shouldPublish($message)) {
+            return;
+        }
+
+        $correlationId = request()?->header('X-Correlation-Id') ?? (string) Str::uuid7();
+
+        dispatch(new MessageUpdated($message->id, $correlationId))
             ->onConnection('rabbitmq')
             ->onQueue('messages-updates-queue');
     }
@@ -51,5 +58,13 @@ class MessageObserver
     public function forceDeleted(Message $message): void
     {
         //
+    }
+
+    protected function shouldPublish(Message $message): bool
+    {
+        // Публикуем, только если менялись что-то кроме служебного updated_at
+        $dirty = array_keys($message->getChanges());
+        $meaningful = array_diff($dirty, ['updated_at', 'updatedAt']);
+        return !empty($meaningful);
     }
 }
