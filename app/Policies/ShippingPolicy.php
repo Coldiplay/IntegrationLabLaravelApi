@@ -3,6 +3,7 @@
 namespace App\Policies;
 
 use App\Enums\Role;
+use App\Enums\ShippingStatus;
 use App\Models\Shipping;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
@@ -85,6 +86,15 @@ class ShippingPolicy
             || Role::isAdmin($user)
             ? Response::allow()
             : Response::deny('You are not authorized to restore shippings.');
+    }
+
+    public function confirm(User $user, Shipping $shipping): Response
+    {
+        return (Role::isDriver($user)
+            && ShippingStatus::fromKey($shipping->shipping_status) == ShippingStatus::InProcessing)
+        || Role::isAdmin($user)
+            ? Response::allow()
+            : Response::deny('You are not authorized to confirm shipping.');
     }
 
     /**

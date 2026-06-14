@@ -13,8 +13,7 @@ class ShiftsObserver
     public function created(DriversShift $driversShift): void
     {
         dispatch(new ShiftUpdated($driversShift->id))
-            ->onConnection('rabbitmq')
-            ->onQueue('shifts-updates-queue');
+            ->onConnection('rabbitmq');
     }
 
     /**
@@ -23,8 +22,7 @@ class ShiftsObserver
     public function updated(DriversShift $driversShift): void
     {
         dispatch(new ShiftUpdated($driversShift->id))
-            ->onConnection('rabbitmq')
-            ->onQueue('shifts-updates-queue');
+            ->onConnection('rabbitmq');
     }
 
     /**
@@ -32,7 +30,8 @@ class ShiftsObserver
      */
     public function deleted(DriversShift $driversShift): void
     {
-        //
+        dispatch(new ShiftUpdated($driversShift->id))
+            ->onConnection('rabbitmq');
     }
 
     /**

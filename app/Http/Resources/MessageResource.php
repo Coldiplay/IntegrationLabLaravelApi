@@ -23,6 +23,11 @@ class MessageResource extends JsonResource
                 'sender' => [
                     'id' => $this->sender->id,
                     'login' => $this->sender->login,
+                ],
+                'chat' =>[
+                    'id' => $this->chat_id,
+                    'name' => $this->chat->name,
+                    'is_private_chat' => $this->chat->is_private_chat,
                 ]
             ]
         ];

@@ -16,8 +16,10 @@ trait ApiHelpers
         if ($checkContainerType) {
             if ($container_type == 'array') {
                 $className = get_class($data[0]);
-            }
-            else{
+            } else if (empty($data)) {
+                $className = 'null';
+                $container_type = 'object';
+            } else{
                 $className = get_class($data);
             }
 

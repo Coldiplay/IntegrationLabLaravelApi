@@ -125,6 +125,9 @@ Route::middleware('auth:sanctum')->group(function () {
                ->name('api.shipping.update');
            Route::delete('/', [ShippingController::class, 'destroy'])
                ->name('api.shipping.destroy');
+
+           Route::patch('confirm', [ShippingController::class, 'confirm'])
+               ->name('api.shipping.confirm');
         });
 
 

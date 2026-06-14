@@ -2,52 +2,32 @@
 
 namespace App\Observers;
 
-use App\Jobs\ChatMemberUpdated;
+use App\Jobs\PublishModelEvent;
 use App\Models\ChatMember;
 
 class ChatMembersObserver
 {
-    /**
-     * Handle the ChatMember "created" event.
-     */
     public function created(ChatMember $chatMember): void
     {
-        dispatch(new ChatMemberUpdated($chatMember->user_id, $chatMember->chat_id))
-            ->onConnection('rabbitmq')
-            ->onQueue('chatMembers-updates-queue');
+        PublishModelEvent::dispatch(ChatMember::class,[
+            'chat_id' => $chatMember->chat_id,
+            'user_id' => $chatMember->user_id,
+        ], 'created');
     }
 
-    /**
-     * Handle the ChatMember "updated" event.
-     */
     public function updated(ChatMember $chatMember): void
     {
-        dispatch(new ChatMemberUpdated($chatMember->user_id, $chatMember->chat_id))
-            ->onConnection('rabbitmq')
-            ->onQueue('chatMembers-updates-queue');
+        PublishModelEvent::dispatch(ChatMember::class, [
+            'chat_id' => $chatMember->chat_id,
+            'user_id' => $chatMember->user_id,
+        ], 'updated');
     }
 
-    /**
-     * Handle the ChatMember "deleted" event.
-     */
     public function deleted(ChatMember $chatMember): void
     {
-        //
-    }
-
-    /**
-     * Handle the ChatMember "restored" event.
-     */
-    public function restored(ChatMember $chatMember): void
-    {
-        //
-    }
-
-    /**
-     * Handle the ChatMember "force deleted" event.
-     */
-    public function forceDeleted(ChatMember $chatMember): void
-    {
-        //
+        PublishModelEvent::dispatch(ChatMember::class, [
+            'user_id' => $chatMember->user_id,
+            'chat_id' => $chatMember->chat_id
+        ], 'deleted');
     }
 }

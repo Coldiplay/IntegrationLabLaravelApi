@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Enums\Role;
+use App\Enums\ShippingStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Library\ApiHelpers;
 use App\Http\Requests\StoreShippingRequest;
@@ -72,4 +73,37 @@ class ShippingController extends Controller
         return $this->onSuccess(null, 'Shipping deleted successfully.');
     }
 
+
+    public function confirm(Shipping $shipping) : JsonResponse
+    {
+        $this->authorize('confirm', [Shipping::class, $shipping]);
+
+        $shipping->shipping_status = ShippingStatus::ReadyToShip()->key;
+        $shipping->save();
+
+        return $this->onSuccess(null,'Shipping updated successfully.',
+            checkContainerType: false);
+    }
+
+    public function start(Shipping $shipping) : JsonResponse
+    {
+        $this->authorize('start', [Shipping::class, $shipping]);
+
+        $shipping->shipping_status = ShippingStatus::Shipping()->key;
+        $shipping->save();
+
+        return $this->onSuccess(null, 'Shipping started',
+            checkContainerType: false);
+    }
+
+    public function end(Shipping $shipping) : JsonResponse
+    {
+        $this->authorize('end', [Shipping::class, $shipping]);
+
+        $shipping->shipping_status = ShippingStatus::Delivered()->key;
+        $shipping->save();
+
+        return $this->onSuccess(null, 'Shipping delivered',
+            checkContainerType: false);
+    }
 }

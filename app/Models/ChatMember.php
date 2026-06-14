@@ -12,6 +12,8 @@ class ChatMember extends Model
     use HasFactory;
     protected $guarded = [];
 
+    public $incrementing = false;
+    protected $primaryKey = null;
 
 
     //TODO: Проверить это

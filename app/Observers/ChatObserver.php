@@ -2,52 +2,20 @@
 
 namespace App\Observers;
 
-use App\Jobs\ChatUpdated;
+use App\Jobs\PublishModelEvent;
 use App\Models\Chat;
 
 class ChatObserver
 {
-    /**
-     * Handle the Chat "created" event.
-     */
-    public function created(Chat $chat): void
-    {
-        dispatch(new ChatUpdated($chat->id))
-            ->onConnection('rabbitmq')
-            ->onQueue('chats-updates-queue');
+    public function created(Chat $chat): void {
+        PublishModelEvent::dispatch(Chat::class, $chat->id, 'created');
     }
 
-    /**
-     * Handle the Chat "updated" event.
-     */
-    public function updated(Chat $chat): void
-    {
-        dispatch(new ChatUpdated($chat->id))
-            ->onConnection('rabbitmq')
-            ->onQueue('chats-updates-queue');
+    public function updated(Chat $chat): void {
+        PublishModelEvent::dispatch(Chat::class, $chat->id, 'updated');
     }
 
-    /**
-     * Handle the Chat "deleted" event.
-     */
-    public function deleted(Chat $chat): void
-    {
-        //
-    }
-
-    /**
-     * Handle the Chat "restored" event.
-     */
-    public function restored(Chat $chat): void
-    {
-        //
-    }
-
-    /**
-     * Handle the Chat "force deleted" event.
-     */
-    public function forceDeleted(Chat $chat): void
-    {
-        //
+    public function deleted(Chat $chat): void {
+        PublishModelEvent::dispatch(Chat::class, $chat->id, 'deleted');
     }
 }

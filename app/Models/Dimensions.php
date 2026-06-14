@@ -2,9 +2,7 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-
-class Dimensions extends Model
+class Dimensions
 {
     public function __construct(float $width, float $length, float $height)
     {
