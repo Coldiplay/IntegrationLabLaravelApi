@@ -60,17 +60,6 @@ class ChatController extends Controller
         $this->authorize('view', $chat);
 
         return $this->onSuccess(new ChatResource($chat), 'Chat retrieved successfully.');
-        /*
-        if ($chat->chatMembers()
-                ->where('user_id', $request->user()->id)
-                ->exists()
-            || Role::isAdmin($request->user()))
-        {
-            return $this->onSuccess(new ChatResource($chat), 'Chat retrieved successfully.');
-        }
-
-        return $this->onError(401, 'You are not allowed to see this chat.');
-        */
     }
 
     /**
@@ -94,18 +83,13 @@ class ChatController extends Controller
     }
 
 
-    public function getMessages(Request $request, Chat $chat) : JsonResponse
+    public function getMessages(Chat $chat) : JsonResponse
     {
         $this->authorize('view', [Chat::class, $chat]);
-        if (ChatMember::where('chat_id', $chat->id)
-            ->where('user_id', $request->user()->id)
-            ->exists()) {
-            $messages = Message::where('chat_id', $chat->id)->get();
-            return $this->onSuccess(new MessageCollection($messages),
-                'Messages retrieved successfully.');
-        }
 
-        return $this->onError(401, 'You do not have permission to view this chat.');
+        $messages = Message::where('chat_id', $chat->id)->get();
+        return $this->onSuccess(new MessageCollection($messages),
+            'Messages retrieved successfully.');
     }
     public function sendMessage(StoreMessageRequest $request, Chat $chat) : JsonResponse
     {
@@ -115,31 +99,8 @@ class ChatController extends Controller
         $message = $chat->messages()->create($data);
         return $this->onSuccess(new MessageResource($message), 'Message sent successfully.', 201);
     }
-    public function updateMessage(UpdateMessageRequest $request, Message $message) : JsonResponse
-    {
-        //$this->authorize('update', Message::class);
-        $message->update($request->validated());
-        return $this->onSuccess(new MessageResource($message), 'Message updated successfully.');
-    }
-    public function deleteMessage(Message $message) : JsonResponse
-    {
-        $this->authorize('delete', $message);
-        $message->delete();
-        return $this->onSuccess(null, 'Message deleted successfully.');
 
-        /*
-        if ($request->user()->id === $message->sender_id)
-        //|| Role::isAdmin($request->user()->role))
-        {
-            $message->delete();
-            return $this->onSuccess(null, 'Message deleted successfully.');
-        }
-
-        return $this->onError(401, 'You do not have permission to delete this chat.');
-        */
-    }
-
-    public function getMembers(Request $request, Chat $chat) : JsonResponse
+    public function getMembers(Chat $chat) : JsonResponse
     {
         $this->authorize('view', [ChatMember::class, $chat]);
         return $this->onSuccess(

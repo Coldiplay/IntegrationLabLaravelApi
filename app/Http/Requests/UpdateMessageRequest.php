@@ -13,7 +13,9 @@ class UpdateMessageRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        $message = $this->route('message');
+
+        return $message->sender_id == $this->user()->id;
     }
 
     /**

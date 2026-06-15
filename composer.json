@@ -13,7 +13,7 @@
         "laravel/tinker": "^2.10.1",
         "moonshine/moonshine": "^4.10",
         "vladimir-yuldashev/laravel-queue-rabbitmq": "^14.5",
-        "wadakatu/laravel-spectrum": "^1.1"
+        "vladimir-yuldashev/laravel-queue-rabbitmq": "^14.5"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",

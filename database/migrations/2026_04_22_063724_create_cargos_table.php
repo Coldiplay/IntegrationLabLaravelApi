@@ -29,7 +29,7 @@ return new class extends Migration
                 ->nullable()->default(null);
             $table->foreignIdFor(ShippingOrder::class);
             $table->foreignIdFor(Shipping::class)->nullable();
-            $table->foreignIdFor(CargoType::class);
+            $table->foreignIdFor(CargoType::class)->nullable();
             $table->timestamps();
         });
     }

@@ -20,12 +20,13 @@ class AuthController extends Controller
      */
     public function register(RegisterRequest $request): JsonResponse
     {
-        //Log::info();
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
+        $data = $request->validated();
+        //$data['password'] = Hash::make($data['password']);
+        if (!isset($data['hire_date'])) {
+            $data['hire_date'] = \Illuminate\Support\now();
+        }
+
+        $user = User::create($data);
 
         $token = $user->createToken('auth-token')->plainTextToken;
 
