@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Enums\Role;
+use App\Enums\ShippingStatus;
 use App\Models\Cargo;
 use App\Models\CargoType;
 use App\Models\Chat;
@@ -103,6 +104,7 @@ class DatabaseSeeder extends Seeder
         Message::factory(200)->create();
 
         Shipping::factory(7)->create();
+        Shipping::factory(1)->create(['shipping_status' => ShippingStatus::Shipping()->key]);
         Incident::factory(4)->create();
         Cargo::factory(40)->create();
     }
